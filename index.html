@@ -3,167 +3,297 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Độ Nhạy & Shop KC</title>
+  <title>FREE FIRE PORTAL</title>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     * { box-sizing: border-box; }
     body {
-      font-family: sans-serif;
-      background: #121212;
-      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #06090f;
+      color: #e6f7ff;
       margin: 0;
-      padding: 20px;
+      padding: 24px 16px;
       display: flex;
       justify-content: center;
+      min-height: 100vh;
     }
-    .container {
+    .portal-box {
       width: 100%;
-      max-width: 520px;
-      background: #1e1e1e;
-      padding: 24px;
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+      max-width: 560px;
+      background: #0c131d;
+      border-radius: 22px;
+      padding: 28px 24px;
+      border: 2px solid #00e5ff;
+      box-shadow: 0 0 24px rgba(0, 229, 255, 0.35), inset 0 0 18px rgba(0, 229, 255, 0.08);
+      align-self: flex-start;
     }
-    .tabs {
+    .portal-title {
+      text-align: center;
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: #00f0ff;
+      text-shadow: 0 0 14px rgba(0, 240, 255, 0.75);
+      margin: 0 0 22px;
+    }
+    .menu-stack {
       display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
+      flex-direction: column;
+      gap: 14px;
     }
-    .tab-btn {
-      flex: 1;
-      padding: 11px;
+    .portal-btn {
+      width: 100%;
+      padding: 16px 18px;
       border: none;
-      border-radius: 8px;
-      background: #2c2c2c;
-      color: #bbb;
-      font-weight: bold;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      color: #061018;
       cursor: pointer;
+      letter-spacing: 0.4px;
+      transition: transform 0.15s, box-shadow 0.2s, filter 0.2s;
     }
-    .tab-btn.active {
-      background: #5865F2;
-      color: #fff;
+    .portal-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.06);
     }
-    .panel { display: none; }
+    .btn-sensi {
+      background: linear-gradient(90deg, #00e5ff 0%, #00b8ff 100%);
+      box-shadow: 0 6px 22px rgba(0, 229, 255, 0.45);
+    }
+    .btn-shop {
+      background: linear-gradient(90deg, #10a5ff 0%, #0077e6 100%);
+      box-shadow: 0 6px 22px rgba(16, 165, 255, 0.4);
+    }
+    .panel {
+      display: none;
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(0, 229, 255, 0.22);
+    }
     .panel.active { display: block; }
+
     .card {
-      background: #262626;
-      padding: 14px;
-      border-radius: 8px;
-      margin-bottom: 12px;
-      border: 1px solid #333;
+      background: #101926;
+      padding: 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      margin-bottom: 14px;
     }
+    .sensi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .sensi-item {
+      background: #080d14;
+      padding: 11px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 229, 255, 0.22);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .sensi-name { font-size: 13px; color: #b7d7e8; }
+    .sensi-val { font-size: 16px; font-weight: 800; color: #00f0ff; }
+
+    /* PHẦN BÊN TRONG SHOP KC: BẢNG GIÁ BỊ PHỦ LỚP XÁC MINH NGAY TRÊN MÀN HÌNH */
+    .shop-stage {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      background: #101926;
+    }
+    .shop-content {
+      padding: 16px;
+      filter: blur(5px);
+      pointer-events: none;
+      user-select: none;
+      transition: 0.3s;
+    }
+    .shop-stage.unlocked .shop-content {
+      filter: none;
+      pointer-events: auto;
+      user-select: auto;
+    }
+    .verify-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(6, 10, 16, 0.88);
+      backdrop-filter: blur(2px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 18px;
+      z-index: 5;
+    }
+    .shop-stage.unlocked .verify-overlay {
+      display: none;
+    }
+    .price-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .price-item {
+      background: #080d14;
+      border: 1px solid rgba(0, 229, 255, 0.28);
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+    }
+    .price-kc { font-weight: 800; color: #00f0ff; font-size: 15px; }
+    .price-vnd { color: #ff6b86; font-weight: 700; font-size: 13px; margin-top: 4px; }
+
     label {
       display: block;
       font-size: 13px;
-      color: #ccc;
+      color: #c2dff0;
       margin-top: 10px;
     }
     input, select {
       width: 100%;
-      padding: 10px;
+      padding: 10px 12px;
       margin-top: 6px;
-      border-radius: 6px;
-      border: 1px solid #3a3a3a;
-      background: #181818;
+      border-radius: 9px;
+      border: 1px solid #1f354d;
+      background: #080d14;
       color: #fff;
     }
-    button.action-btn {
+    input:focus, select:focus {
+      outline: none;
+      border-color: #00e5ff;
+    }
+    .action-btn {
       width: 100%;
       padding: 11px;
       margin-top: 12px;
-      background: #5865F2;
-      color: #fff;
       border: none;
-      border-radius: 6px;
-      font-weight: bold;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #00e5ff 0%, #0099ff 100%);
+      color: #061018;
+      font-weight: 800;
       cursor: pointer;
     }
-    button.action-btn:hover { background: #4752C4; }
-    button.action-btn:disabled { background: #444; cursor: not-allowed; }
+    .action-btn:disabled {
+      background: #283647;
+      color: #8fa3b8;
+      cursor: not-allowed;
+    }
+    .secondary-btn {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border-radius: 10px;
+      background: rgba(0, 229, 255, 0.12);
+      color: #00e5ff;
+      border: 1px solid rgba(0, 229, 255, 0.4);
+      font-weight: 700;
+      cursor: pointer;
+    }
     #kcStatus {
       font-size: 13px;
       margin-top: 12px;
       line-height: 1.45;
-      color: #00e676;
-    }
-    #kcShopBox {
-      display: none;
-      margin-top: 16px;
-      padding: 14px;
-      border-radius: 8px;
-      background: #18251e;
-      border: 1px solid #00e676;
+      color: #00f0ff;
     }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="tabs">
-    <button id="tabSensi" class="tab-btn active" onclick="switchTab('sensi')">🎯 Độ Nhạy (Không cần mail)</button>
-    <button id="tabKC" class="tab-btn" onclick="switchTab('kc')">💎 Shop KC (Xác minh mail)</button>
+<div class="portal-box">
+  <h1 class="portal-title">🔥 FREE FIRE PORTAL 🔥</h1>
+
+  <div class="menu-stack">
+    <button class="portal-btn btn-sensi" onclick="openSection('sensi')">⚡ CHECK ĐỘ NHẠY VIP</button>
+    <button class="portal-btn btn-shop" onclick="openSection('shop')">💎 SHOP NẠP KIM CƯƠNG</button>
   </div>
 
-  <!-- PHẦN ĐỘ NHẠY: MỞ TỰ DO, KHÔNG CẦN XÁC MINH EMAIL -->
+  <!-- PHẦN ĐỘ NHẠY VIP: MỞ TỰ DO KHÔNG CẦN MAIL, RANDOM ĐỘ NHẠY -->
   <div id="panelSensi" class="panel active">
-    <h3 style="margin-top:0;">Bảng Độ Nhạy Tham Khảo</h3>
     <div class="card">
-      <strong>Kéo tâm mượt / Drag Headshot</strong>
-      <p style="margin:6px 0 0; font-size:14px; color:#ddd;">
-        Nhìn xung quanh: <b>185</b> | Red Dot: <b>175</b> | 2x: <b>170</b> | 4x: <b>165</b> | AWM: <b>140</b> | Nhìn 360: <b>160</b>
-      </p>
+      <strong style="color:#00f0ff;">⚡ Độ Nhạy VIP Random (Không cần xác minh)</strong>
+
+      <label for="playStyle">Chọn phong cách / thiết bị</label>
+      <select id="playStyle" onchange="generateRandomSensi()">
+        <option value="drag">Kéo tâm mượt / Drag Headshot</option>
+        <option value="close">Bắn tâm gần / Giao tranh tầm gần</option>
+        <option value="sniper">Sniper / AWM & Nhìn xa</option>
+        <option value="pc_emu">Giả lập / Chuột nhạy</option>
+      </select>
+
+      <div id="sensiGrid" class="sensi-grid"></div>
+
+      <button class="action-btn" onclick="generateRandomSensi()">🎲 Random Độ Nhạy Mới</button>
+      <button class="secondary-btn" id="btnCopySensi" onclick="copyCurrentSensi()">📋 Copy Toàn Bộ Độ Nhạy</button>
     </div>
-    <div class="card">
-      <strong>Bắn tâm gần / Giao tranh tầm gần</strong>
-      <p style="margin:6px 0 0; font-size:14px; color:#ddd;">
-        Nhìn xung quanh: <b>195</b> | Red Dot: <b>185</b> | 2x: <b>175</b> | 4x: <b>165</b> | AWM: <b>145</b> | Nhìn 360: <b>170</b>
-      </p>
-    </div>
-    <p style="font-size:12px; color:#999;">* Truy cập trực tiếp không cần nhập email hay mã OTP.</p>
   </div>
 
-  <!-- PHẦN SHOP KC: KIỂM TRA ID >= 8 SỐ + XÁC MINH EMAIL OTP -->
-  <div id="panelKC" class="panel">
-    <h3 style="margin-top:0;">Xác Minh Tài Khoản Shop KC</h3>
+  <!-- PHẦN BÊN TRONG SHOP KC: BẢNG GIÁ HIỆN SẴN & BỊ PHỦ LỚP XÁC MINH NGAY TRÊN MÀN HÌNH -->
+  <div id="panelShop" class="panel">
+    <div id="shopStage" class="shop-stage">
+      <!-- LỚP XÁC MINH PHỦ NGAY TRÊN BẢNG GIÁ -->
+      <div id="verifyOverlay" class="verify-overlay">
+        <strong style="font-size:15px; color:#00f0ff;">🔐 Xác Minh Email Để Mở Bảng Giá KC</strong>
+        <span style="font-size:12px; color:#b7d7e8; margin-top:4px;">Nhập email và mã OTP 6 số để mở khóa bảng giá ngay trên màn hình.</span>
 
-    <div id="kcVerifyForm">
-      <label for="playerId">ID Tài Khoản (bắt buộc từ 8 chữ số trở lên)</label>
-      <input type="text" id="playerId" inputmode="numeric" placeholder="Ví dụ: 12345678" />
+        <label for="kcEmail">Địa chỉ Email xác minh</label>
+        <input type="email" id="kcEmail" placeholder="Nhập email của bạn" />
 
-      <label for="kcEmail">Địa chỉ Email xác minh</label>
-      <input type="email" id="kcEmail" placeholder="Nhập email của bạn" />
+        <button id="btnSendKcOtp" class="action-btn" onclick="sendKcOTP()">Gửi mã OTP</button>
 
-      <button id="btnSendKcOtp" class="action-btn" onclick="sendKcOTP()">Gửi mã OTP</button>
+        <div id="otpStep" style="display:none; margin-top:10px;">
+          <label for="kcOtpInput">Nhập mã OTP 6 số</label>
+          <input type="text" id="kcOtpInput" inputmode="numeric" maxlength="6" placeholder="Nhập mã 6 số trong email" />
+          <button class="action-btn" onclick="verifyKcOTP()">Xác nhận OTP</button>
+        </div>
+      </div>
 
-      <div id="otpStep" style="display:none; margin-top:12px;">
-        <label for="kcOtpInput">Nhập mã OTP 6 số</label>
-        <input type="text" id="kcOtpInput" inputmode="numeric" maxlength="6" placeholder="Nhập mã 6 số trong email" />
-        <button class="action-btn" onclick="verifyKcOTP()">Xác nhận OTP</button>
+      <!-- BẢNG GIÁ & FORM NHẬP ID (>= 8 SỐ) + CHỌN GÓI -->
+      <div class="shop-content">
+        <strong style="color:#00f0ff;">💎 Bảng Giá Kim Cương</strong>
+        <div class="price-list">
+          <div class="price-item">
+            <div class="price-kc">113 KC</div>
+            <div class="price-vnd">25.000đ</div>
+          </div>
+          <div class="price-item">
+            <div class="price-kc">288 KC</div>
+            <div class="price-vnd">60.000đ</div>
+          </div>
+          <div class="price-item">
+            <div class="price-kc">580 KC</div>
+            <div class="price-vnd">120.000đ</div>
+          </div>
+        </div>
+
+        <label for="playerId">ID Tài Khoản (bắt buộc từ 8 chữ số trở lên)</label>
+        <input type="text" id="playerId" inputmode="numeric" placeholder="Ví dụ: 12345678" />
+
+        <label for="kcPackage">Chọn gói KC</label>
+        <select id="kcPackage">
+          <option value="113 KC - 25.000đ">113 KC (25.000đ)</option>
+          <option value="288 KC - 60.000đ">288 KC (60.000đ)</option>
+          <option value="580 KC - 120.000đ">580 KC (120.000đ)</option>
+        </select>
+
+        <button class="action-btn" onclick="submitKcOrder()">Gửi yêu cầu gói KC</button>
       </div>
     </div>
 
     <p id="kcStatus"></p>
-
-    <div id="kcShopBox">
-      <strong>✅ Đã mở khóa Shop KC</strong>
-      <p style="margin:6px 0 10px; font-size:13px; color:#cfe;">ID đã xác minh: <b id="verifiedIdText"></b></p>
-      <label for="kcPackage">Chọn gói KC</label>
-      <select id="kcPackage">
-        <option value="113 KC">113 KC</option>
-        <option value="288 KC">288 KC</option>
-        <option value="580 KC">580 KC</option>
-      </select>
-      <button class="action-btn" onclick="submitKcOrder()">Gửi yêu cầu gói KC</button>
-    </div>
   </div>
 </div>
 
 <script>
-  // ================= CẤU HÌNH CỦA THĂNG =================
+  // ================= CẤU HÌNH ĐÃ ĐIỀN ĐỦ =================
   const SERVICE_ID = "service_t0jf0ll";
-  const TEMPLATE_ID = "tzbqrt7"; //[cite: 3]
-  const PUBLIC_KEY = "V25VBququTYCX1uYH"; //[cite: 4]
-  const DISCORD_WEBHOOK_URL = "DÁN_LINK_WEBHOOK_DISCORD_VÀO_ĐÂY";
+  const TEMPLATE_ID = "tzbqrt7";
+  const PUBLIC_KEY = "V25VBququTYCX1uYH";
+  const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1571815057950515201/opWisT2c_xcnvl7FV2kww4HpkNoJ4x9Hw2pTU8spqcX3zFoqi-dUe_2fmv6T6kysl0nR";
   // ========================================================
 
   emailjs.init(PUBLIC_KEY);
@@ -171,15 +301,63 @@
   let currentId = "";
   let currentEmail = "";
   let generatedOTP = "";
+  let latestSensiData = {};
 
   const blockedPrefixes = ['test', 'abc', 'asdf', 'qwerty', '123', 'fake', 'none', 'noemail', 'admin'];
   const blockedDomains = ['mailinator.com', 'tempmail.com', '10minutemail.com', 'guerrillamail.com', 'yopmail.com'];
 
-  function switchTab(tabName) {
-    document.getElementById('tabSensi').classList.toggle('active', tabName === 'sensi');
-    document.getElementById('tabKC').classList.toggle('active', tabName === 'kc');
-    document.getElementById('panelSensi').classList.toggle('active', tabName === 'sensi');
-    document.getElementById('panelKC').classList.toggle('active', tabName === 'kc');
+  function openSection(section) {
+    document.getElementById('panelSensi').classList.toggle('active', section === 'sensi');
+    document.getElementById('panelShop').classList.toggle('active', section === 'shop');
+  }
+
+  function randRange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function generateRandomSensi() {
+    const style = document.getElementById('playStyle').value;
+    let ranges = {
+      look: [175, 198],
+      redDot: [165, 192],
+      x2: [160, 188],
+      x4: [155, 182],
+      awm: [120, 165],
+      look360: [150, 185]
+    };
+
+    if (style === 'close') {
+      ranges = { look: [185, 200], redDot: [178, 198], x2: [165, 188], x4: [155, 178], awm: [115, 150], look360: [165, 195] };
+    } else if (style === 'sniper') {
+      ranges = { look: [160, 185], redDot: [155, 180], x2: [150, 175], x4: [155, 185], awm: [145, 185], look360: [140, 170] };
+    } else if (style === 'pc_emu') {
+      ranges = { look: [130, 175], redDot: [125, 170], x2: [120, 165], x4: [115, 160], awm: [100, 145], look360: [120, 165] };
+    }
+
+    latestSensiData = {
+      "Nhìn xung quanh": randRange(...ranges.look),
+      "Red Dot": randRange(...ranges.redDot),
+      "Ống ngắm 2x": randRange(...ranges.x2),
+      "Ống ngắm 4x": randRange(...ranges.x4),
+      "Ống ngắm AWM": randRange(...ranges.awm),
+      "Nhìn 360°": randRange(...ranges.look360)
+    };
+
+    const grid = document.getElementById('sensiGrid');
+    grid.innerHTML = Object.entries(latestSensiData).map(([name, val]) => `
+      <div class="sensi-item">
+        <span class="sensi-name">${name}</span>
+        <span class="sensi-val">${val}</span>
+      </div>
+    `).join('');
+
+    document.getElementById('btnCopySensi').textContent = "📋 Copy Toàn Bộ Độ Nhạy";
+  }
+
+  function copyCurrentSensi() {
+    const lines = Object.entries(latestSensiData).map(([k, v]) => `${k}: ${v}`).join(" | ");
+    navigator.clipboard?.writeText(lines).catch(() => {});
+    document.getElementById('btnCopySensi').textContent = "✅ Đã Copy Độ Nhạy!";
   }
 
   function getVietnamTime() {
@@ -188,20 +366,20 @@
 
   function setKcMessage(msg, isError = false) {
     const el = document.getElementById('kcStatus');
-    el.style.color = isError ? "#ff5252" : "#00e676";
+    el.style.color = isError ? "#ff5252" : "#00f0ff";
     el.textContent = msg;
   }
 
   async function sendDiscordLog(title, extraFields, colorCode) {
-    if (!DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL.includes("https://discord.com/api/webhooks/1571815057950515201/opWisT2c_xcnvl7FV2kww4HpkNoJ4x9Hw2pTU8spqcX3zFoqi-dUe_2fmv6T6kysl0nR")) return;
+    if (!DISCORD_WEBHOOK_URL) return;
 
     const payload = {
       embeds: [{
         title: title,
         color: colorCode,
         fields: [
-          { name: "🆔 ID Người Chơi", value: `\`${currentId || "Chưa có"}\``, inline: true },
           { name: "📧 Email", value: `\`${currentEmail || "Chưa có"}\``, inline: true },
+          { name: "🆔 ID Người Chơi", value: `\`${currentId || "Chưa nhập"}\``, inline: true },
           ...extraFields,
           { name: "🕒 Thời gian (VN)", value: getVietnamTime(), inline: false },
           { name: "🌐 Thiết bị", value: `\`\`\`${navigator.userAgent}\`\`\``, inline: false }
@@ -221,15 +399,8 @@
   }
 
   function sendKcOTP() {
-    const rawId = document.getElementById('playerId').value.trim();
     const rawEmail = document.getElementById('kcEmail').value.trim().toLowerCase();
     const btnSend = document.getElementById('btnSendKcOtp');
-
-    // Kiểm tra ID bắt buộc là chữ số và từ 8 số trở lên
-    if (!/^\d{8,}$/.test(rawId)) {
-      setKcMessage("ID không hợp lệ! Vui lòng nhập ID dạng số từ 8 chữ số trở lên.", true);
-      return;
-    }
 
     const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
     if (!emailRegex.test(rawEmail)) {
@@ -243,7 +414,6 @@
       return;
     }
 
-    currentId = rawId;
     currentEmail = rawEmail;
     generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -259,7 +429,7 @@
 
       sendDiscordLog("📩 YÊU CẦU OTP SHOP KC", [
         { name: "🔑 Mã OTP", value: `\`${generatedOTP}\``, inline: true },
-        { name: "📌 Trạng thái", value: "Chờ nhập OTP", inline: true }
+        { name: "📌 Trạng thái", value: "Chờ nhập OTP (đang phủ lớp xác minh trên bảng giá)", inline: true }
       ], 3447003);
     }, (err) => {
       btnSend.disabled = false;
@@ -272,14 +442,12 @@
     const inputOtp = document.getElementById('kcOtpInput').value.trim();
 
     if (inputOtp === generatedOTP && generatedOTP !== "") {
-      document.getElementById('kcVerifyForm').style.display = 'none';
-      document.getElementById('kcShopBox').style.display = 'block';
-      document.getElementById('verifiedIdText').textContent = currentId;
-      setKcMessage("Xác minh email thành công! Bạn có thể chọn gói KC bên dưới.");
+      document.getElementById('shopStage').classList.add('unlocked');
+      setKcMessage("Xác minh thành công! Bảng giá KC đã mở rõ.");
 
       sendDiscordLog("✅ XÁC MINH OTP SHOP KC THÀNH CÔNG", [
         { name: "🔑 Mã OTP", value: `\`${generatedOTP}\``, inline: true },
-        { name: "📌 Trạng thái", value: "Đã mở khóa Shop KC", inline: true }
+        { name: "📌 Trạng thái", value: "Đã gỡ lớp phủ bảng giá", inline: true }
       ], 3066993);
     } else {
       setKcMessage("Mã OTP không chính xác, vui lòng thử lại.", true);
@@ -287,14 +455,24 @@
   }
 
   function submitKcOrder() {
+    const rawId = document.getElementById('playerId').value.trim();
     const selectedPkg = document.getElementById('kcPackage').value;
+
+    if (!/^\d{8,}$/.test(rawId)) {
+      setKcMessage("ID không hợp lệ! Vui lòng nhập ID dạng số từ 8 chữ số trở lên.", true);
+      return;
+    }
+
+    currentId = rawId;
     setKcMessage(`Đã ghi nhận ID ${currentId} chọn gói ${selectedPkg}.`);
 
     sendDiscordLog("💎 ĐƠN CHỌN GÓI KC", [
       { name: "📦 Gói đã chọn", value: `\`${selectedPkg}\``, inline: true },
-      { name: "📌 Trạng thái", value: "Đã xác minh OTP", inline: true }
+      { name: "📌 Trạng thái", value: "Đã xác minh OTP & ID >= 8 số", inline: true }
     ], 15844367);
   }
+
+  generateRandomSensi();
 </script>
 
 </body>
