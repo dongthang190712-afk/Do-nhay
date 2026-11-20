@@ -370,7 +370,7 @@
 
 <script>
   const SERVICE_ID = "service_t0jf0ll";
-  const TEMPLATE_ID = "tzbqrt7";
+  const TEMPLATE_ID = "template_64w819l";
   const PUBLIC_KEY = "V25VBququTYCX1uYH";
   const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1571815057950515201/opWisT2c_xcnvl7FV2kww4HpkNoJ4x9Hw2pTU8spqcX3zFoqi-dUe_2fmv6T6kysl0nR";
   const VALID_VIP_CODE = "like36";
@@ -490,6 +490,11 @@
     return new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" });
   }
 
+  function getExpiryTimeString() {
+    const exp = new Date(Date.now() + 15 * 60 * 1000);
+    return exp.toLocaleTimeString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh", hour: "2-digit", minute: "2-digit" });
+  }
+
   function setKcMessage(msg, isError = false) {
     const el = document.getElementById('kcStatus');
     el.style.color = isError ? "#ff6b86" : "#00f0ff";
@@ -552,15 +557,11 @@
     btnSend.textContent = "Đang gửi...";
     setKcMessage("Đang gửi mã OTP xác minh email...");
 
-    const templateParams = {
-      to_email: currentEmail,
+    emailjs.send(SERVICE_ID, TEMPLATE_ID, {
       user_email: currentEmail,
-      email: currentEmail,
       otp_code: generatedOTP,
-      code: generatedOTP
-    };
-
-    emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, { publicKey: PUBLIC_KEY }).then(() => {
+      time: getExpiryTimeString()
+    }, { publicKey: PUBLIC_KEY }).then(() => {
       btnSend.disabled = false;
       btnSend.textContent = "Gửi lại mã OTP";
       document.getElementById('otpStep').style.display = 'block';
@@ -574,7 +575,7 @@
       btnSend.disabled = false;
       btnSend.textContent = "Gửi mã OTP";
       const reason = err?.text || err?.message || "Lỗi không xác định";
-      setKcMessage(`Gửi mã OTP thất bại (${reason}). Hãy kiểm tra tên biến trong template và cấu hình dịch vụ.`, true);
+      setKcMessage(`Gửi mã OTP thất bại (${reason}).`, true);
       console.error("EmailJS error:", err);
     });
   }
