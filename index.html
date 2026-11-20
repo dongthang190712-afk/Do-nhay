@@ -376,7 +376,7 @@
   const VALID_VIP_CODE = "like36";
 
   if (window.emailjs) {
-    emailjs.init(PUBLIC_KEY);
+    emailjs.init({ publicKey: PUBLIC_KEY });
   }
 
   let currentId = "";
@@ -549,12 +549,20 @@
     generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
 
     btnSend.disabled = true;
+    btnSend.textContent = "Đang gửi...";
     setKcMessage("Đang gửi mã OTP xác minh email...");
 
-    emailjs.send(SERVICE_ID, TEMPLATE_ID, {
+    const templateParams = {
+      to_email: currentEmail,
       user_email: currentEmail,
-      otp_code: generatedOTP
-    }).then(() => {
+      email: currentEmail,
+      otp_code: generatedOTP,
+      code: generatedOTP
+    };
+
+    emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, { publicKey: PUBLIC_KEY }).then(() => {
+      btnSend.disabled = false;
+      btnSend.textContent = "Gửi lại mã OTP";
       document.getElementById('otpStep').style.display = 'block';
       setKcMessage("Đã gửi mã OTP 6 số! Hãy kiểm tra hộp thư (kể cả mục Spam).");
 
@@ -564,7 +572,9 @@
       ], 3447003);
     }, (err) => {
       btnSend.disabled = false;
-      setKcMessage("Không thể gửi mã lúc này, vui lòng kiểm tra lại cấu hình.", true);
+      btnSend.textContent = "Gửi mã OTP";
+      const reason = err?.text || err?.message || "Lỗi không xác định";
+      setKcMessage(`Gửi mã OTP thất bại (${reason}). Hãy kiểm tra tên biến trong template và cấu hình dịch vụ.`, true);
       console.error("EmailJS error:", err);
     });
   }
